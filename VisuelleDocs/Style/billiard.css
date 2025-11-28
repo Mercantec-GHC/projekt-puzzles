@@ -60,11 +60,16 @@ nav {
         /* border-radius: 10px; */
         transition: 0.5s;
         /* border: solid 1px var(--brass); */
+        border: transparent 1px solid;
+        border-color: transparent;
+        border-radius: 10px;
 
         &:hover {
           /* background-color: var(--felt); */
-          color: var(--brass);
+          /* color: var(--brass); */
           text-decoration: underline;
+          background-color: var(--felt);
+          border-color: var(--brass);
         }
       }
     }
@@ -133,7 +138,7 @@ input[type="text"], input[type="number"], textarea {
   border-radius: 10px;
   background-color: var(--felt);
   color: var(--cue);
-  padding: 5px 10px;
+  padding: 7px 10px;
   outline: transparent;
 
   &:is(textarea) {
@@ -164,8 +169,41 @@ form {
   padding: 10px;
   gap: 15px;
 
+  & .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    & .form-group-contents {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      &>* {
+        flex: 1;
+      }
+    }
+    
+  }
+
   & label:has(:not(input[type="file"])) {
     display: flex;
     flex-direction: column;
+  }
+}
+
+button {
+  padding: 10px 15px;
+  background-color: var(--brass);
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  color: var(--cue);
+  font-family: Limelight, sans-serif;
+
+  &:hover {
+    text-decoration: underline;
   }
 }

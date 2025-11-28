@@ -32,41 +32,53 @@
             <h1>Add item/advert</h1>
             <form onsubmit="(e) => {e.preventDefault()}">
                 <label>
-                    Image
-                    <input type="file" accept="image/*" name="image">
+                    Add Image
+                    <input type="file" accept="image/*" name="image" required>
                 </label>
                 <label>
                     Name:
-                    <input type="text" name="name">
+                    <input type="text" name="name" required>
                 </label>
                 <label>
                     Description:
-                    <textarea name="description" id=""></textarea>
+                    <textarea name="description" id="" required></textarea>
                 </label>
                 <label>
-                    Count:
-                    <input type="number" step="1" name="peicesAmount">
+                    Piece Amount:
+                    <input type="number" step="1" name="pieceAmount" required>
                 </label>
-                <label>
-                    Height:
-                    <input type="number" step="0.1" name="boxHeight">
-                </label>
-                <label>
-                    Width:
-                    <input type="number" step="0.1" name="boxWidth">
-                </label>
-                <label>
-                    Depth:
-                    <input type="number" step="0.1" name="boxDepth">
-                </label>
-                <label>
-                    Finished Puzzle Length:
-                    <input type="number" step="0.1" name="finishedPuzzleLenght">
-                </label>
-                <label>
-                    Finished Puzzle Width:
-                    <input type="number" step="0.1" name="finishedPuzzleWidth">
-                </label>
+                <div class="form-group">
+                    <h3>Box Dimensions</h3>
+                    <div class="form-group-contents">
+
+                        <label>
+                            Height:
+                            <input type="number" step="0.1" name="boxHeight" required>
+                        </label>
+                        <label>
+                            Width:
+                            <input type="number" step="0.1" name="boxWidth" required>
+                        </label>
+                        <label>
+                            Depth:
+                            <input type="number" step="0.1" name="boxDepth" required>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h3>Finished Puzzle Dimensions</h3>
+                    <div class="form-group-contents">
+                        <label>
+                            Length:
+                            <input type="number" step="0.1" name="finishedPuzzleLength" required>
+                        </label>
+                        <label>
+                            Width:
+                            <input type="number" step="0.1" name="finishedPuzzleWidth" required>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit">Add Advert</button>
             </form>
         </section>
 
