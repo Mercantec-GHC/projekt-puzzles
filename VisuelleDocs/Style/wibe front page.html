@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="billiard.css">
+  <title>Billiards Theme Front Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+ 
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <div class="logo">BQ</div>
+        <div>
+          <div style="font-weight:800;color:var(--brass)">Billiards Quarter</div>
+          <div style="font-size:12px;color:var(--cue);opacity:0.9;margin-top:2px">Classic style, modern web</div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#about">About</a>
+        <a class="cta" href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <h1>Rich Billiards Aesthetic for Your Front Page</h1>
+        <p class="subtitle">A warm, luxurious palette inspired by green felt, mahogany tables, and polished brass fixtures.</p>
+
+        <div class="primary-actions">
+          <a class="btn btn-primary" href="#start">Get Started</a>
+          <button class="btn btn-ghost">See Demo</button>
+        </div>
+
+        <div class="features" id="features">
+          <div class="feature card">
+            <h3>Classic</h3>
+            <p>Deep mahogany tones and brass accents give a premium, timeless look.</p>
+          </div>
+          <div class="feature card">
+            <h3>Focused</h3>
+            <p>Warm cue-ball whites make your text readable without harsh contrast.</p>
+          </div>
+          <div class="feature card">
+            <h3>Stable</h3>
+            <p>A clean grid layout built for clarity and elegance.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="mock-window">
+          <div class="mock-top">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="mock-content">
+            <h4 style="margin-top:6px;margin-bottom:8px;color:var(--brass)">Preview Area</h4>
+            <p style="margin:0">Use this section to show product previews, stats, or feature highlights — all styled with a billiards-inspired palette.</p>
+          </div>
+        </div>
+
+        <div style="height:18px"></div>
+        <div class="card">
+          <strong style="color:var(--brass)">Quick Facts</strong>
+          <ul style="margin-top:8px;padding-left:18px;margin-bottom:0;color:var(--cue)">
+            <li>Luxury aesthetic</li>
+            <li>Warm palette</li>
+            <li>Fully responsive</li>
+          </ul>
+        </div>
+      </aside>
+    </header>
+
+    <footer>
+      <div>© <span id="year"></span> Billiards Quarter</div>
+      <div>Theme Palette: Felt, Mahogany, Brass</div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
