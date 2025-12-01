@@ -3,20 +3,20 @@
 public class Advert
 {
     // Unique identifier for the advert
-    int id { get; set; }
+    int Id { get; set; }
 
     // Name of the advert
-    string name { get; set; }
+    string Name { get; set; }
 
     // Description of the advert
-    string description { get; set; }
+    string Description { get; set; }
 
     // Price of the advert its a double because we want to allow decimal values 64-bit precision
-    double price { get; set;  }
+    double Price { get; set;  }
 
-    Vector3 boxDimensions { get; set; }
+    Vector3 BoxDimensions { get; set; }
 
-    Vector2 puzzleDimensions { get; set; }
+    Vector2 PuzzleDimensions { get; set; }
 
     DateTime createdAt { get; set; }
     bool isSold { get; set; }
