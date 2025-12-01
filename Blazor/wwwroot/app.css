@@ -64,7 +64,7 @@ article {
     padding: 10px;
 }
 
-.ad-boxes {
+.advert-boxes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, auto));
     gap: 10px;
