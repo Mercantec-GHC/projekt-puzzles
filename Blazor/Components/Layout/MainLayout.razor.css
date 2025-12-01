@@ -3,16 +3,18 @@
 
 
 main {
-    background: linear-gradient(var(--felt), var(--dark-felt));
-    border: 2px solid var(--brass);
-    border-radius: 15px;
-    padding: 10px;
+/*    background: linear-gradient(var(--felt), var(--dark-felt));*/
+/*    border: 2px solid var(--brass);*/
+/*    border-radius: 15px;*/
+/*    padding: 10px;*/
     display: flex;
     flex-direction: column;
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    flex: 1;
+    justify-content: center;
 }
 
 

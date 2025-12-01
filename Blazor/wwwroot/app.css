@@ -31,6 +31,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    min-height: 100vh;
 }
 
 
@@ -50,12 +51,30 @@ a {
 }
 
 section {
-    border: 2px solid var(--light-felt);
-    border-radius: 10px;
+    background: linear-gradient(var(--felt), var(--dark-felt));
+    border: 2px solid var(--brass);
+    border-radius: 15px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     text-align: center;
+
+    & > div {
+       padding: 10px;
+       border: 2px solid var(--light-felt);
+       border-radius: 10px;
+       display: flex;
+       flex-direction: column;
+    }
+
+    &.strech {
+        flex: 1;
+
+        & > div {
+            flex: 1;
+/*            justify-content: center;*/
+        }
+    }
 }
 
 article {
@@ -76,7 +95,7 @@ article {
     padding: 10px;
 }
 
-input[type="text"], input[type="number"], textarea {
+input, input[type="text"], input[type="password"], input[type="number"], textarea {
     border: 2px solid var(--light-felt);
     border-radius: 10px;
     background-color: var(--felt);
@@ -86,6 +105,9 @@ input[type="text"], input[type="number"], textarea {
 
     &:is(textarea) {
         resize: vertical;
+    }
+    &::placeholder {
+        
     }
 }
 

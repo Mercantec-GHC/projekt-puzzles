@@ -11,6 +11,10 @@
         max-height: 40px;
     }
 
+    & a:has(img) {
+        width: 40px;
+    }
+
     & ul {
         list-style: none;
         display: inline-flex;

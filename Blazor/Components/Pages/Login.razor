@@ -1,0 +1,37 @@
+@page "/login"
+@* @rendermode InteractiveServer *@
+@using Blazor.Components.Shared
+
+<PageTitle>Login</PageTitle>
+
+
+<section>
+    <div>
+
+    <h1>Login</h1>
+    <EditForm Model="@loginUser" OnValidSubmit="@Submit" FormName="LoginForm">
+        <label>
+            Username
+            <InputText @bind-Value="loginUser.Username" />
+        </label>
+        
+        <label>
+            Password
+            <InputText @bind-Value="loginUser.Password" type="password" />
+        </label>
+        
+        <button type="submit">Login</button>
+    </EditForm>
+    </div>
+</section>
+
+
+@code {
+    User loginUser = new();
+
+
+    private async Task Submit()
+    {
+        
+    }
+}
