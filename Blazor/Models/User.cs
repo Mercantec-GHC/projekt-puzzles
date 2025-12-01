@@ -1,10 +1,10 @@
-class User
+public class User
 {
-    int Id { get; set; }
-    string Username { get; set; }
-    string Password { get; set; }
-    string Email { get; set; }
-    string PhoneNumber { get; set; }
-    string PassHash { get; set; }
-    DateTime CreatedAt { get; set; }
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+    public string PassHash { get; set; }
+    public DateTime CreatedAt { get; set; }
 }
