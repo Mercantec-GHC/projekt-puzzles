@@ -1,0 +1,42 @@
+﻿nav {
+    background: linear-gradient(var(--mahogany), var(--pocket));
+    padding: 10px;
+    border: var(--brass) 2px solid;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & img {
+        max-height: 40px;
+    }
+
+    & ul {
+        list-style: none;
+        display: inline-flex;
+        gap: 20px;
+
+        & li {
+            margin: 0;
+
+            & a {
+                /* background-color: var(--pocket); */
+                padding: 5px 10px;
+                /* border-radius: 10px; */
+                transition: 0.5s;
+                /* border: solid 1px var(--brass); */
+                border: transparent 1px solid;
+                border-color: transparent;
+                border-radius: 10px;
+
+                &:hover {
+                    /* background-color: var(--felt); */
+                    /* color: var(--brass); */
+                    text-decoration: underline;
+                    background-color: var(--felt);
+                    border-color: var(--brass);
+                }
+            }
+        }
+    }
+}

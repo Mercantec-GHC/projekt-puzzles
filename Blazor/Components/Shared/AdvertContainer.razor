@@ -1,0 +1,10 @@
+﻿@using System.Globalization
+@inherits OwningComponentBase
+
+<div class="ad-boxes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

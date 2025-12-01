@@ -1,28 +1,178 @@
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+:root {
+    --felt: #0E4D2D; /* Billiard Green */
+    --light-felt: #186840;
+    --dark-felt: #0b3a22;
+    --mahogany: #4A2511; /* Dark reddish wood */
+    --brass: #D4AF37; /* Polished Brass */
+    --amber: #f2d4a1;
+    --cue: #F5F5DC; /* Cue ball off-white */
+    --pocket: #2B1B17; /* Leather pocket */
+    --radius: 14px;
+    --max-width: 1100px;
+    --shadow: rgba(0,0,0,0.18);
 }
 
-a, .btn-link {
-    color: #006bb7;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+body {
+    /* background-color: var(--pocket); */
+    background-image: url(dark-brown-background.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--cue);
+    font-family: "Limelight", sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+
+a {
+    color: var(--cue);
+    text-decoration: none;
 }
 
-.content {
-    padding-top: 1.1rem;
+.highlight {
+    padding: 5px 10px;
+    background-color: var(--brass);
+    border-radius: 10px;
+
+    &:hover {
+        color: var(--cue);
+    }
 }
+
+section {
+    border: 2px solid var(--light-felt);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+article {
+    border: 2px solid var(--light-felt);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.ad-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, auto));
+    gap: 10px;
+}
+
+.ad {
+    border: 2px solid var(--light-felt);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+input[type="text"], input[type="number"], textarea {
+    border: 2px solid var(--light-felt);
+    border-radius: 10px;
+    background-color: var(--felt);
+    color: var(--cue);
+    padding: 7px 10px;
+    outline: transparent;
+
+    &:is(textarea) {
+        resize: vertical;
+    }
+}
+
+
+
+label:has(input[type="file"]) {
+    padding: 5px 10px;
+    background-color: var(--brass);
+    border-radius: 10px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+input[type="file"] {
+    display: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    margin: 0 auto;
+    padding: 10px;
+    gap: 15px;
+
+    & .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        & .form-group-contents {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            & > * {
+                flex: 1;
+            }
+        }
+    }
+
+    & label:has(:not(input[type="file"])) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+button {
+    padding: 10px 15px;
+    background-color: var(--brass);
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--cue);
+    font-family: Limelight, sans-serif;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 
 h1:focus {
     outline: none;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
