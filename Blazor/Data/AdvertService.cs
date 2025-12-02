@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class ServiceAdvert
+public class AdvertService
 {
 	
 }
