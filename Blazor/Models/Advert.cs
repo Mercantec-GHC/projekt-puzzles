@@ -3,7 +3,7 @@
 public class Advert
 {
     // Unique identifier for the advert
-    public int Id { get; set; }
+    public int AdvertId { get; set; }
 
     // Name of the advert
     public string Title { get; set; }
