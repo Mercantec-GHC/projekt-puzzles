@@ -53,8 +53,38 @@ public class UserService
 
     public async Task<User> LoginUserAsync(string username, string password)
     {
-        string hashedPassword = hashPassword(password);
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand(
+                "SELECT \"UserId\", \"Username\", \"Email\", \"PhoneNumber\", \"PassHash\", \"CreatedAt\" FROM \"UserAccounts\" WHERE \"Username\" = @name",
+                conn
+            );
+            cmd.Parameters.AddWithValue("name", username);
+            using var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                var hash = reader.GetString(2);
+                if (hash == hashPassword(password))
+                {
+                    return new User
+                    {
+                        UserId = reader.GetInt32(0),
+                        Username = reader.GetString(1),
+                        Email = reader.GetString(2),
+                        PhoneNumber = reader.GetString(3),
+                        PassHash = reader.GetString(4),
+                        CreatedAt = reader.GetDateTime(5)
+                    };
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error logging in user: {ex.Message}");
+        }
         // Implement user login logic here using _connectionString
-        return new User(); // Placeholder
+        return null; // Placeholder
     }
 }

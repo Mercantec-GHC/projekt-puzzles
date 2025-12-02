@@ -8,8 +8,12 @@ namespace Blazor
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add user service to DB context
+            // Add user and advert service to DB context
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<AdvertService>();
+
+            // Add State handling service
+            builder.Services.AddScoped<AppState>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
