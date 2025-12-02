@@ -3,3 +3,4 @@
 .vs
 appsettings.json
 Blazor/Data/ConnectionString.cs
+.vscode/settings.json

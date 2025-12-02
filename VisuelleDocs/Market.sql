@@ -1,5 +1,5 @@
 CREATE TABLE "UserAccounts" (
-  "UserId" INT PRIMARY KEY NOT NULL,
+  "UserId" serial PRIMARY KEY NOT NULL,
   "Username" varchar(225) UNIQUE NOT NULL,
   "Email" varchar(225) NOT NULL,
   "PassHash" varchar(225) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE "UserAccounts" (
 );
 
 CREATE TABLE "Advert" (
-  "AdvertId" INT PRIMARY KEY NOT NULL,
+  "AdvertId" serial PRIMARY KEY NOT NULL,
   "Title" varchar(225) NOT NULL,
   "Description" varchar(225) NOT NULL,
   "UserId" INT NOT NULL,
