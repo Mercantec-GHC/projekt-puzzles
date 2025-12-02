@@ -32,7 +32,7 @@ public class UserService
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = new NpgsqlCommand(
-                "INSERT INTO UserAccounts (Username, PassHash, Email, PhoneNumber) VALUES (@name, @passhash, @email, @phonenumber)",
+                "INSERT INTO \"UserAccounts\" (\"Username\", \"PassHash\", \"Email\", \"PhoneNumber\") VALUES (@name, @passhash, @email, @phonenumber)",
                 conn
             );
             user.PassHash = hashPassword(user.Password);
