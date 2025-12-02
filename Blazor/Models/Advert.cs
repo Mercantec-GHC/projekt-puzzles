@@ -14,6 +14,8 @@ public class Advert
     // Price of the advert its a double because we want to allow decimal values 64-bit precision
     double Price { get; set;  }
 
+    int PieceAmount { get; set; }
+
     Vector3 BoxDimensions { get; set; }
 
     Vector2 PuzzleDimensions { get; set; }
