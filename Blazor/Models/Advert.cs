@@ -6,7 +6,7 @@ public class Advert
     public int Id { get; set; }
 
     // Name of the advert
-    public string Name { get; set; }
+    public string Title { get; set; }
 
     // Description of the advert
     public string Description { get; set; }
