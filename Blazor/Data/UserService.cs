@@ -27,25 +27,26 @@ public class UserService
 
     public async Task<bool> CreateUserAsync(User user)
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        await conn.OpenAsync();
-        using var cmd = new NpgsqlCommand(
-            "INSERT INTO Users (Username, PassHash, Email, PhoneNumber) VALUES (@name, @passhash, @email, @phonenumber)",
-            conn
-        );
-        user.PassHash = hashPassword(user.Password);
-        cmd.Parameters.AddWithValue("name", user.Username);
-        cmd.Parameters.AddWithValue("passhash", user.PassHash);
-        cmd.Parameters.AddWithValue("email", user.Email);
-        cmd.Parameters.AddWithValue("phonenumber", user.PhoneNumber);
-
         try
         {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand(
+                "INSERT INTO UserAccounts (Username, PassHash, Email, PhoneNumber) VALUES (@name, @passhash, @email, @phonenumber)",
+                conn
+            );
+            user.PassHash = hashPassword(user.Password);
+            cmd.Parameters.AddWithValue("name", user.Username);
+            cmd.Parameters.AddWithValue("passhash", user.PassHash);
+            cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("phonenumber", user.PhoneNumber);
+
             await cmd.ExecuteNonQueryAsync();
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error creating user: {ex.Message}");
             return false;
         }
     }

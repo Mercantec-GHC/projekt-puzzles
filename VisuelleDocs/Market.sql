@@ -1,4 +1,4 @@
-CREATE TABLE "Users" (
+CREATE TABLE "UserAccounts" (
   "UserId" INT PRIMARY KEY NOT NULL,
   "Username" varchar(225) UNIQUE NOT NULL,
   "Email" varchar(225) NOT NULL,
@@ -24,4 +24,4 @@ CREATE TABLE "Advert" (
   "CreatedAt" TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
-ALTER TABLE "Advert" ADD FOREIGN KEY ("UserId") REFERENCES "Users" ("UserId");
+ALTER TABLE "Advert" ADD FOREIGN KEY ("UserId") REFERENCES "UserAccounts" ("UserId");
