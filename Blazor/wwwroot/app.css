@@ -89,7 +89,7 @@ article {
 
 .advert-boxes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(230px, auto));
     gap: 10px;
 }
 
