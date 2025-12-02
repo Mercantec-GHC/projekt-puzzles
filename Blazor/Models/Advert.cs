@@ -20,6 +20,10 @@ public class Advert
 
     Vector2 PuzzleDimensions { get; set; }
 
+    byte[] Picture { get; set; }
+
+    User UserId { get; set; }
+
     DateTime createdAt { get; set; }
     bool isSold { get; set; }
     bool isActive { get; set; }
