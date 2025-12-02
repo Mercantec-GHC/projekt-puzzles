@@ -22,8 +22,8 @@ public class Advert
 
     public byte[] Picture { get; set; }
 
-    public User UserId { get; set; }
+    public User User { get; set; }
 
-    public DateTime createdAt { get; set; }
-    public bool isSold { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public bool IsSold { get; set; }
 }
