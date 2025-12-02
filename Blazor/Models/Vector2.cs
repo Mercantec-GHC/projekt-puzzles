@@ -1,4 +1,4 @@
-class Vector2
+public class Vector2
 {
     public double _X;
     public double _Y;

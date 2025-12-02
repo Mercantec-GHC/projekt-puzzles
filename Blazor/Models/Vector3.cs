@@ -1,4 +1,4 @@
-class Vector3 : Vector2
+public class Vector3 : Vector2
 {
 	public double _Z;
 	public double Z
