@@ -11,6 +11,9 @@ namespace Blazor
             // Add user service to DB context
             builder.Services.AddScoped<UserService>();
 
+            // Add State handling service
+            builder.Services.AddScoped<AppState>();
+
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
