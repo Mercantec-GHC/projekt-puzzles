@@ -15,19 +15,7 @@
 <section>
     <div>
         <h1>title</h1>
-        <AdvertContainer>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
-            <div class="ad">ad</div>
+        <AdvertContainer Adverts="tempArray">
         </AdvertContainer>
     </div>
 </section>
@@ -36,8 +24,18 @@
 
 
 
+@code {
+    public Advert advert = new()
+    {
+        Title = "test",
+        Description = "dfhajdhfkahdlfhbalfhbvilsdhff",
+        PieceAmount = 100000
+    };
+
+    Advert[] tempArray = { };
 
 
 
 
 
+}
