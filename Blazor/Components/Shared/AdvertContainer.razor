@@ -1,9 +1,19 @@
 ﻿@using System.Globalization
 
 <div class="advert-boxes">
-    @ChildContent
+    @foreach (Advert advert in adverts)
+    {
+        <div class="ad">
+            <img src="favicon.png" alt="Alternate Text" />
+            <h4>@advert.Title</h4>
+        </div>
+    }
+    
 </div>
 
 @code {
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public Advert[] Adverts { get; set; }
+
+    // [Parameter] public RenderFragment ChildContent { get; set; }
 }

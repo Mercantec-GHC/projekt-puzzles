@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
 @inject UserService userService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Sign up</PageTitle>
 
@@ -35,6 +36,11 @@
         <br />
         <button type="submit">Sign up</button>
     </EditForm>
+
+        @if (message != null)
+        {
+        <p>@message</p>    
+        }
     </div>
 </section>
 
@@ -42,6 +48,7 @@
 @code {
     User loginUser = new();
     string passwordCopy = "";
+    string message = "";
 
 
     private async Task Submit()
@@ -49,6 +56,12 @@
         if (loginUser.Password == passwordCopy)
         {
             await userService.CreateUserAsync(loginUser);
+            //message = "your account has been submitted";
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            message = "The passwords does not match";
         }
     }
 }
