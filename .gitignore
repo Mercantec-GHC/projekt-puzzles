@@ -2,3 +2,4 @@
 */obj
 .vs
 appsettings.json
+Blazor/Data/ConnectionString.cs
