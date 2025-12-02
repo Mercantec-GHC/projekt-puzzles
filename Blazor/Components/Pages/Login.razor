@@ -1,5 +1,5 @@
 @page "/login"
-@* @rendermode InteractiveServer *@
+@rendermode InteractiveServer
 @using Blazor.Components.Shared
 
 <PageTitle>Login</PageTitle>
@@ -12,16 +12,21 @@
     <EditForm Model="@loginUser" OnValidSubmit="@Submit" FormName="LoginForm">
         <label>
             Username
-            <InputText @bind-Value="loginUser.Username" />
+                <InputText @bind-Value="loginUser.Username" required />
         </label>
         
         <label>
             Password
-            <InputText @bind-Value="loginUser.Password" type="password" />
+            <InputText @bind-Value="loginUser.Password" type="password" required />
         </label>
-        
+        <br />
         <button type="submit">Login</button>
     </EditForm>
+
+    <p>
+        if you have no account click 
+        <a href="/sign-up" class="brass">Here</a>
+    </p>
     </div>
 </section>
 

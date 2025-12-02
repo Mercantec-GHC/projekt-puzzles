@@ -1,0 +1,90 @@
+@page "/add-advert"
+@rendermode InteractiveServer
+@using Blazor.Components.Shared
+
+<PageTitle>Add adverticement</PageTitle>
+
+
+
+<section>
+    <div>
+        <h1>Add adverticement</h1>
+    </div>
+</section>
+
+<section>
+    <div>
+        <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
+            <label>
+                Image
+                <InputFile OnChange="@OnFileChange" />
+            </label>
+            <label>
+                Puzzle Title
+                <InputText @bind-Value="advert.Title" />
+            </label>
+            <label>
+                Describtion
+                <InputTextArea @bind-Value="advert.Description" />
+            </label>
+            <label>
+                Piece amount
+                <InputNumber @bind-Value="advert.PieceAmount" />
+            </label>
+            <label>
+                Price
+                <InputNumber @bind-Value="advert.Price" />
+            </label>
+            <label>
+                Box dimensions
+                <InputNumber @bind-Value="advert.BoxDimensions.Height" />
+                <InputNumber @bind-Value="advert.BoxDimensions.Depth" />
+                <InputNumber @bind-Value="advert.BoxDimensions.Width" />
+            </label>
+            <label>
+                Puzzle dimensions
+                <InputNumber @bind-Value="advert.PuzzleDimensions.Width" />
+                <InputNumber @bind-Value="advert.PuzzleDimensions.Height" />
+            </label>
+
+            <button type="submit">Login</button>
+        </EditForm>
+        
+        @if (message != null)
+        {
+            <p>@message</p>
+        }
+        
+    </div>
+</section>
+
+
+
+
+@code {
+    Advert advert = new();
+
+    string message = "";
+
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.File;
+        if (file != null)
+        {
+            using MemoryStream ms = new MemoryStream();
+            await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
+
+            advert.Picture = ms.ToArray();
+        }
+    }
+
+    private async Task NewAdvert()
+    {
+
+
+        message = "Atvertisement has been oploaded!";
+        // reset form data
+        advert = new();
+    }
+}

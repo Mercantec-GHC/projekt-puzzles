@@ -40,6 +40,10 @@ a {
     text-decoration: none;
 }
 
+.brass {
+    color: var(--brass);
+}
+
 .highlight {
     padding: 5px 10px;
     background-color: var(--brass);

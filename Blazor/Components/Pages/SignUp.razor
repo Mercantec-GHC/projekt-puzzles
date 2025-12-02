@@ -1,0 +1,54 @@
+@page "/sign-up"
+@rendermode InteractiveServer
+@using Blazor.Components.Shared
+@inject UserService userService
+
+<PageTitle>Sign up</PageTitle>
+
+
+<section>
+    <div>
+
+    <h1>Sign up</h1>
+    <EditForm Model="@loginUser" OnValidSubmit="@Submit" FormName="SignUpForm">
+        <label>
+            Username
+            <InputText @bind-Value="loginUser.Username" required />
+        </label>
+        
+        <label>
+            Password
+            <InputText @bind-Value="loginUser.Password" type="password" required />
+        </label>
+        <label>
+            Confirm password
+            <InputText @bind-Value="passwordCopy" type="password" required />
+        </label>
+        <label>
+            Email
+            <InputText @bind-Value="loginUser.Email" type="email" required />
+        </label>
+        <label>
+            Phone number
+            <InputText @bind-Value="loginUser.PhoneNumber" type="tel" />
+        </label>
+        <br />
+        <button type="submit">Sign up</button>
+    </EditForm>
+    </div>
+</section>
+
+
+@code {
+    User loginUser = new();
+    string passwordCopy = "";
+
+
+    private async Task Submit()
+    {
+        if (loginUser.Password == passwordCopy)
+        {
+            await userService.CreateUserAsync(loginUser);
+        }
+    }
+}
