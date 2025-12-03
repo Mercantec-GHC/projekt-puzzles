@@ -1,0 +1,42 @@
+﻿
+
+
+<div class="single-advert">
+    <h1>@advert.Title</h1>
+    <div class="split">
+
+        <div class="text">
+            <h3>@advert.PieceAmount Pieces</h3>
+
+            <p>Price: @(advert.Price)kr.</p>
+            <p>@advert.Description</p>
+            
+            <div>
+            <p>Puzzle dimensions</p>
+            <p>Width: @advert.PuzzleDimensions.Width</p>
+            <p>Height: @advert.PuzzleDimensions.Height</p>
+            </div>
+            
+            <div>
+            <p>Box dimensions</p>
+            <p>Width: @advert.BoxDimensions.Width</p>
+            <p>Height: @advert.BoxDimensions.Height</p>
+            <p>Depth: @advert.BoxDimensions.Depth</p>
+            </div>
+            
+        </div>
+
+        <div>
+            <img src="favicon.png" alt="Can " />
+        </div>
+    </div>
+    
+    
+</div>
+
+
+
+@code {
+    [Parameter]
+    public Advert advert { get; set; }
+}

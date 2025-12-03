@@ -1,25 +1,28 @@
 @page "/advert/{id:int}"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
+@inject AdvertService ad
+@using Blazor.Components.Shared
 
-<PageTitle>Home</PageTitle>
-
-
-
+<PageTitle>Advert details</PageTitle>
 
 <section>
-    <div>
-        
-        
-    </div>
+    @if (advert != null)
+    {
+    <SingleAdvert advert="advert"/>
+    }
 </section>
-
 
 @code {
     [Parameter]
     public int id { get; set; }
 
     Advert advert;
+
+    protected override async Task OnInitializedAsync()
+    {
+        advert = await ad.GetAdvertByIdAsync(id);
+    }
 }
 
 

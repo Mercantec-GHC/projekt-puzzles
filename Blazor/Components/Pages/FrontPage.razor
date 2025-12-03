@@ -17,8 +17,7 @@
 <section>
     <div>
         <h1>title</h1>
-        <AdvertContainer Adverts="adverts">
-        </AdvertContainer>
+        <AdvertContainer Adverts="adverts"/>  
     </div>
 </section>
 
@@ -39,7 +38,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        adverts = await ad.GetAllAdvertsAsync();
-        adverts.Add(advert);
+        adverts = await ad.GetAllAdvertsAsync(limit: 4);
     }
 }
