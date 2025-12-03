@@ -31,6 +31,9 @@
 
             Console.WriteLine($"Logged in User: {loggedInUser.Username}, Email: {loggedInUser.Email}");
 
+            var advertCount = advertService.GetAdvertCountAsync().Result;
+
+            Console.WriteLine($"Total Adverts Available: {advertCount}");
 
         }
     }

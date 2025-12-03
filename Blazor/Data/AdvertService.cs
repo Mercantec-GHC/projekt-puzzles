@@ -48,7 +48,7 @@ public class AdvertService
             await conn.OpenAsync();
 
             using var cmd = new NpgsqlCommand(
-                @"SELECT COUNT(*) FROM ""Adverts"" WHERE ""IsSold"" = FALSE",
+                @"SELECT COUNT(*) FROM ""Advert"" WHERE ""IsSold"" = FALSE",
                 conn
             );
 
