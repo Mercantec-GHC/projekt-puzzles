@@ -68,7 +68,9 @@ public class AdvertService
                     a.""IsSold"" 
                 FROM 
                     ""Advert"" a 
-                    LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId"" 
+                    LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
+                WHERE 
+                    a.""IsSold"" = FALSE
                 ORDER BY 
                     a.""CreatedAt"" DESC 
                 OFFSET 
