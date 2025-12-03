@@ -40,6 +40,27 @@ public class AdvertService
         }
     }
 
+    public async Task<int> GetAdvertCountAsync()
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(
+                @"SELECT COUNT(*) FROM ""Adverts"" WHERE ""IsSold"" = FALSE",
+                conn
+            );
+
+            var count = (long)await cmd.ExecuteScalarAsync();
+            return (int)count;
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving advert count: {ex.Message}");
+            return 0;
+        }
+    }
+
     public async Task<List<Advert>> GetAllAdvertsAsync(int offset = 0, int limit = 100)
     {
         var adverts = new List<Advert>();
@@ -268,6 +289,55 @@ public class AdvertService
         {
             Console.WriteLine($"Error retrieving advert by User ID: {ex.Message}");
             return adverts;
+        }
+    }
+
+    public async Task<Advert> UpdateAdvertAsync(Advert advert)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(
+                @"UPDATE 
+                    ""Adverts"" 
+                SET 
+                    ""Title"" = @title, 
+                    ""Description"" = @description, 
+                    ""Price"" = @price, 
+                    ""PieceAmount"" = @pieceamount, 
+                    ""BoxDimHeight"" = @boxdimheight, 
+                    ""BoxDimWidth"" = @boxdimwidth, 
+                    ""BoxDimDepth"" = @boxdimdepth, 
+                    ""PuzzleDimHeight"" = @puzzledimheight, 
+                    ""PuzzleDimWidth"" = @puzzledimwidth, 
+                    ""Picture"" = @picture, 
+                    ""IsSold"" = @issold 
+                WHERE 
+                    ""AdvertId"" = @advertId",
+                conn
+            );
+
+            cmd.Parameters.AddWithValue("advertId", advert.AdvertId);
+            cmd.Parameters.AddWithValue("title", advert.Title);
+            cmd.Parameters.AddWithValue("description", advert.Description);
+            cmd.Parameters.AddWithValue("price", advert.Price);
+            cmd.Parameters.AddWithValue("pieceamount", advert.PieceAmount);
+            cmd.Parameters.AddWithValue("boxdimheight", advert.BoxDimensions.Height);
+            cmd.Parameters.AddWithValue("boxdimwidth", advert.BoxDimensions.Width);
+            cmd.Parameters.AddWithValue("boxdimdepth", advert.BoxDimensions.Depth);
+            cmd.Parameters.AddWithValue("puzzledimheight", advert.PuzzleDimensions.Height);
+            cmd.Parameters.AddWithValue("puzzledimwidth", advert.PuzzleDimensions.Width);
+            cmd.Parameters.AddWithValue("picture", (object?)advert.Picture ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("issold", advert.IsSold);
+
+            await cmd.ExecuteNonQueryAsync();
+            return advert;
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating advert: {ex.Message}");
+            return null;
         }
     }
     
