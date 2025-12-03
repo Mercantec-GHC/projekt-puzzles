@@ -78,6 +78,9 @@ public class AdvertService
                 conn
             );
 
+            cmd.Parameters.AddWithValue("offset", offset);
+            cmd.Parameters.AddWithValue("limit", limit);
+
             using var reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
