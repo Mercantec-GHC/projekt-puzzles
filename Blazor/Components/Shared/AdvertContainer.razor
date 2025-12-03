@@ -1,19 +1,28 @@
 ﻿@using System.Globalization
+@inject NavigationManager NavigationManager
 
 <div class="advert-boxes">
-    @foreach (Advert advert in adverts)
+    @if (Adverts != null)
     {
-        <div class="ad">
-            <img src="favicon.png" alt="Alternate Text" />
-            <h4>@advert.Title</h4>
-        </div>
+        @foreach (Advert advert in Adverts)
+        {
+            <div class="ad" @onclick="() => OpenAdvert(advert.AdvertId)">
+                <img src="favicon.png" alt="Can " />
+                <p>
+                <span>@advert.Title</span>
+                <span>@advert.PieceAmount P</span>
+                </p>
+            </div>
+        }
     }
-    
 </div>
 
 @code {
     [Parameter]
-    public Advert[] Adverts { get; set; }
+    public List<Advert> Adverts { get; set; }
 
-    // [Parameter] public RenderFragment ChildContent { get; set; }
+    void OpenAdvert(int id)
+    {
+        NavigationManager.NavigateTo($"/advert/{id}");
+    }
 }

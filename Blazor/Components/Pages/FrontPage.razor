@@ -1,12 +1,14 @@
 @page "/"
-@* @rendermode InteractiveServer *@
+@rendermode InteractiveServer
 @using Blazor.Components.Shared
+@inject AdvertService ad
+
 
 <PageTitle>Home</PageTitle>
 
 
 <section>
-    <div>
+    <div
     <h1>title</h1>
     <p>yes</p>
     </div>
@@ -15,7 +17,7 @@
 <section>
     <div>
         <h1>title</h1>
-        <AdvertContainer Adverts="tempArray">
+        <AdvertContainer Adverts="adverts">
         </AdvertContainer>
     </div>
 </section>
@@ -29,13 +31,15 @@
     {
         Title = "test",
         Description = "dfhajdhfkahdlfhbalfhbvilsdhff",
-        PieceAmount = 100000
+        PieceAmount = 1000
     };
 
-    Advert[] tempArray = { };
+    List<Advert> adverts;
 
 
-
-
-
+    protected override async Task OnInitializedAsync()
+    {
+        adverts = await ad.GetAllAdvertsAsync();
+        adverts.Add(advert);
+    }
 }

@@ -97,6 +97,24 @@ article {
     border: 2px solid var(--light-felt);
     border-radius: 10px;
     padding: 10px;
+    cursor: pointer;
+    transition: 0.5s;
+
+    &:hover {
+        border-color: var(--brass)
+    }
+
+    & p {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    & img {
+        max-width: 150px;
+        max-height: 100px;
+        object-fit: contain;
+        height:100px;
+    }
 }
 
 input, input[type="text"], input[type="password"], input[type="number"], textarea {
