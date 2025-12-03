@@ -1,0 +1,69 @@
+﻿@page "/adverts/{pageIndex:int}"
+@rendermode InteractiveServer
+@using Blazor.Components.Shared
+@inject AdvertService ad
+
+
+<PageTitle>Adverts</PageTitle>
+
+<section>
+    <div>
+        <AdvertContainer Adverts="adverts" />
+    </div>
+</section>
+
+<section>
+    <div class="pagination">
+
+        @if (pageIndex != 1)
+        {
+        <a href="/adverts/@(pageIndex - 1)">&#11164</a>
+        }
+
+        @pageIndex
+
+        @if (isNextPage)
+        {
+        <a href="/adverts/@(pageIndex + 1)">&#11166</a>
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public int pageIndex { get; set; }
+
+    const int adsPerPage = 40;
+    int pageOffset;
+    int advertCount;
+
+    bool isNextPage = true;
+
+
+    List<Advert> adverts;
+
+
+
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        pageOffset = adsPerPage * (pageIndex - 1);
+
+        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset);
+
+        if ((pageOffset + adsPerPage) > advertCount)
+        {
+            isNextPage = false;
+        }
+        else
+        {
+            isNextPage = true;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        advertCount = await ad.GetAdvertCountAsync();
+    }
+}

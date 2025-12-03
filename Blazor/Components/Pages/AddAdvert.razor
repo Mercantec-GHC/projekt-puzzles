@@ -1,14 +1,15 @@
 @page "/add-advert"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
+@inject AdvertService ad
 
-<PageTitle>Add adverticement</PageTitle>
+<PageTitle>Add advertisement</PageTitle>
 
 
 
 <section>
     <div>
-        <h1>Add adverticement</h1>
+        <h1>Add advertisement</h1>
     </div>
 </section>
 
@@ -17,7 +18,7 @@
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
             <label>
                 Image
-                <InputFile OnChange="@OnFileChange" />
+                <InputFile OnChange="@OnFileChange" accecpt="image/jpeg" />
             </label>
             <label>
                 Puzzle Title

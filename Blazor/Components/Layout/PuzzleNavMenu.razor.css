@@ -24,19 +24,12 @@
             margin: 0;
 
             & a {
-                /* background-color: var(--pocket); */
-                padding: 5px 10px;
-                /* border-radius: 10px; */
-                transition: 0.5s;
-                /* border: solid 1px var(--brass); */
+                padding: 5px 10px;                
                 border: transparent 1px solid;
                 border-color: transparent;
                 border-radius: 10px;
 
                 &:hover {
-                    /* background-color: var(--felt); */
-                    /* color: var(--brass); */
-                    text-decoration: underline;
                     background-color: var(--felt);
                     border-color: var(--brass);
                 }
