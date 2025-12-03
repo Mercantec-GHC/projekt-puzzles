@@ -50,26 +50,27 @@ public class AdvertService
 
             using var cmd = new NpgsqlCommand(
                 @"SELECT 
-                    a.AdvertId, 
-                    a.Title, 
-                    a.Description, 
-                    a.Price, 
-                    a.PieceAmount, 
-                    a.BoxDimHeight, 
-                    a.BoxDimWidth, 
-                    a.BoxDimDepth, 
-                    a.PuzzleDimHeight, 
-                    a.PuzzleDimWidth, 
-                    a.Picture, 
-                    u.Username, --USER OBJECT
-                    u.Email,    --USER OBJECT
-                    u.PhoneNumber, --USER OBJECT
-                    a.CreatedAt, 
-                    a.IsSold 
+                    a.""AdvertId"", 
+                    a.""Title"", 
+                    a.""Description"", 
+                    a.""Price"", 
+                    a.""PieceAmount"", 
+                    a.""BoxDimHeight"", 
+                    a.""BoxDimWidth"", 
+                    a.""BoxDimDepth"", 
+                    a.""PuzzleDimHeight"", 
+                    a.""PuzzleDimWidth"", 
+                    a.""Picture"", 
+                    u.""Username"", 
+                    u.""Email"", 
+                    u.""PhoneNumber"", 
+                    a.""CreatedAt"", 
+                    a.""IsSold"" 
                 FROM 
-                    Adverts a LEFT JOIN UserAccounts u ON a.UserId = u.UserId 
+                    ""Advert"" a 
+                    LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId"" 
                 ORDER BY 
-                    a.CreatedAt DESC 
+                    a.""CreatedAt"" DESC 
                 OFFSET 
                     @offset 
                 LIMIT 
