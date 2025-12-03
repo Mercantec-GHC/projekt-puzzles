@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../TestConsole/TestConsole.csproj" Id="b6b30964-b0de-4963-b914-acddf42a3883" />
   <Project Path="Blazor.csproj" />
 </Solution>
