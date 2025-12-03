@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "C#: Blazor [https]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\Blazor\\Blazor.csproj",
+            "launchConfigurationId": "TargetFramework=;https"
+        },
+        {
+            "name": "C#: TestConsole",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\TestConsole\\TestConsole.csproj",
+            "launchConfigurationId": "TargetFramework=;TestConsole"
+        }
+    ]
+}

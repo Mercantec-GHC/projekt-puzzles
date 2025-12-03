@@ -58,14 +58,25 @@ public class UserService
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = new NpgsqlCommand(
-                "SELECT \"UserId\", \"Username\", \"Email\", \"PhoneNumber\", \"PassHash\", \"CreatedAt\" FROM \"UserAccounts\" WHERE \"Username\" = @name",
+                @"SELECT 
+                    u.""UserId"", 
+                    u.""Username"", 
+                    u.""Email"", 
+                    u.""PhoneNumber"", 
+                    u.""PassHash"", 
+                    u.""CreatedAt"" 
+                FROM 
+                    ""UserAccounts"" u
+                WHERE 
+                    u.""Username"" = @name",
                 conn
             );
             cmd.Parameters.AddWithValue("name", username);
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                var hash = reader.GetString(2);
+                var hash = reader.GetString(4);
+                
                 if (hash == hashPassword(password))
                 {
                     return new User
@@ -84,7 +95,6 @@ public class UserService
         {
             Console.WriteLine($"Error logging in user: {ex.Message}");
         }
-        // Implement user login logic here using _connectionString
-        return null; // Placeholder
+        return null;
     }
 }

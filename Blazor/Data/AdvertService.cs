@@ -193,5 +193,82 @@ public class AdvertService
             return null;
         }
     }
+
+    public async Task<List<Advert>> GetAdvertsByUserIdAsync(int userId)
+    {
+        var adverts = new List<Advert>();
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(
+                @"SELECT 
+                    a.""AdvertId"", 
+                    a.""Title"", 
+                    a.""Description"", 
+                    a.""Price"", 
+                    a.""PieceAmount"", 
+                    a.""BoxDimHeight"", 
+                    a.""BoxDimWidth"", 
+                    a.""BoxDimDepth"", 
+                    a.""PuzzleDimHeight"", 
+                    a.""PuzzleDimWidth"", 
+                    a.""Picture"", 
+                    u.""Username"", 
+                    u.""Email"", 
+                    u.""PhoneNumber"", 
+                    a.""CreatedAt"", 
+                    a.""IsSold"" 
+                FROM 
+                    ""Advert"" a 
+                    LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
+                WHERE 
+                    a.""UserId"" = @userId",
+                conn
+            );
+
+            cmd.Parameters.AddWithValue("userId", userId);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                adverts.Add(new Advert
+                {
+                    AdvertId = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    Description = reader.GetString(2),
+                    Price = reader.GetDouble(3),
+                    PieceAmount = reader.GetInt32(4),
+                    BoxDimensions = new Vector3
+                    {
+                        Height = reader.GetDouble(5),
+                        Width = reader.GetDouble(6),
+                        Depth = reader.GetDouble(7)
+                    },
+                    PuzzleDimensions = new Vector2
+                    {
+                        Height = reader.GetDouble(8),
+                        Width = reader.GetDouble(9)
+                    },
+                    Picture = !reader.IsDBNull(10) ? reader["Picture"] as byte[] : null,
+                    User = new User
+                    {
+                        Username = reader.GetString(11),
+                        Email = reader.GetString(12),
+                        PhoneNumber = reader.GetString(13)
+                    },
+                    CreatedAt = reader.GetDateTime(14),
+                    IsSold = reader.GetBoolean(15)
+                });
+            }
+            return adverts;
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving advert by User ID: {ex.Message}");
+            return adverts;
+        }
+    }
     
 }
