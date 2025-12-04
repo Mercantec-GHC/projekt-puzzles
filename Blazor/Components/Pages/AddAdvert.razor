@@ -105,6 +105,7 @@
     private async Task NewAdvert()
     {
         advert.User = state.CurrentUser;
+        advert.CreatedAt = DateTime.Now;
 
         await ad.AddAdvertAsync(advert);
 
