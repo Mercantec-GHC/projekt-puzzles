@@ -17,7 +17,7 @@ public class AdvertService
 
             using var cmd = new NpgsqlCommand(
                 @"INSERT INTO 
-                    ""Adverts"" (
+                    ""Advert"" (
                         ""Title"",
                         ""Description"", 
                         ""Price"", 
