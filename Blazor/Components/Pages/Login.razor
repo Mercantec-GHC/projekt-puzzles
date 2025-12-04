@@ -1,6 +1,9 @@
 @page "/login"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
+@inject UserService us
+@inject AppState state
+@inject NavigationManager NavigationManager
 
 <PageTitle>Login</PageTitle>
 
@@ -37,6 +40,8 @@
 
     private async Task Submit()
     {
-        
+        loginUser = await us.LoginUserAsync(loginUser.Username, loginUser.Password);
+        state.login(loginUser);
+        NavigationManager.NavigateTo("/");
     }
 }
