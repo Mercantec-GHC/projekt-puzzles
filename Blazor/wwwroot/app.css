@@ -93,36 +93,6 @@ article {
     padding: 10px;
 }
 
-.advert-boxes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, auto));
-    gap: 10px;
-}
-
-.ad {
-    border: 2px solid var(--light-felt);
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    transition: 0.5s;
-
-    &:hover {
-        border-color: var(--brass)
-    }
-
-    & p {
-        display: flex;
-        justify-content: space-evenly;
-    }
-
-    & img {
-        max-width: 150px;
-        max-height: 100px;
-        object-fit: contain;
-        height:100px;
-    }
-}
-
 input, input[type="text"], input[type="password"], input[type="number"], textarea {
     border: 2px solid var(--light-felt);
     border-radius: 10px;
@@ -139,28 +109,6 @@ input, input[type="text"], input[type="password"], input[type="number"], textare
     }
 }
 
-.single-advert {
-    gap: 20px;
-
-    & img {
-        width: 100%;
-        object-fit: contain;
-    }
-
-    & .text {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        text-align: left;
-    }
-}
-
-.split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
 .box {
     border: 2px solid var(--light-felt);
     border-radius: 10px;
@@ -175,32 +123,6 @@ a.gold {
         text-decoration: underline;
     }
 }
-
-.pagination {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-    font-size: 20px;
-    align-items: center;
-
-    & a {
-        color: var(--brass);
-        border-radius: 10px;
-        border: solid 1px transparent;
-        transition: 0.5s;
-
-        &:hover {
-            border-color: var(--brass);
-        }
-    }
-
-    & a, & span {
-        padding: 5px 10px;
-    }
-}
-
-
 
 
 label:has(input[type="file"]) {
