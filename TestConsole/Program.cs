@@ -12,13 +12,13 @@
 
             foreach (var advert in adverts)
             {
-                Console.WriteLine($"Advert ID: {advert.AdvertId}, Title: {advert.Title}");
+                Console.WriteLine($"Advert ID: {advert.AdvertId}, Title: {advert.Title}, User: {advert.User.UserId}");
             }
 
 
             var advertById = advertService.GetAdvertByIdAsync(1).Result;
 
-            Console.WriteLine($"Fetched Advert by ID 1: Title: {advertById.Title}, Description: {advertById.Description}");
+            Console.WriteLine($"Fetched Advert by ID 1: Title: {advertById.Title}, Description: {advertById.Description} By User: {advertById.User.UserId}");
 
             var getUserAdvert = advertService.GetAdvertsByUserIdAsync(2).Result;
 

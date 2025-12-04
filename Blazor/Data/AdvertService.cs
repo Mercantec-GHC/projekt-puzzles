@@ -193,6 +193,7 @@ public class AdvertService
                     a.""PuzzleDimHeight"", 
                     a.""PuzzleDimWidth"", 
                     a.""Picture"", 
+                    u.""UserId"",
                     u.""Username"", 
                     u.""Email"", 
                     u.""PhoneNumber"", 
@@ -230,12 +231,13 @@ public class AdvertService
                     },
                     Picture = !reader.IsDBNull(10) ? reader["Picture"] as byte[] : null,
                     User = new User { 
-                        Username = reader.GetString(11), 
-                        Email = reader.GetString(12), 
-                        PhoneNumber = reader.GetString(13) 
+                        UserId = reader.GetInt32(11),
+                        Username = reader.GetString(12), 
+                        Email = reader.GetString(13), 
+                        PhoneNumber = reader.GetString(14) 
                     },
-                    CreatedAt = reader.GetDateTime(14),
-                    IsSold = reader.GetBoolean(15)
+                    CreatedAt = reader.GetDateTime(15),
+                    IsSold = reader.GetBoolean(16)
                 };
             }
             return null;
@@ -267,6 +269,7 @@ public class AdvertService
                     a.""PuzzleDimHeight"", 
                     a.""PuzzleDimWidth"", 
                     a.""Picture"", 
+                    u.""UserId"",
                     u.""Username"", 
                     u.""Email"", 
                     u.""PhoneNumber"", 
@@ -313,12 +316,13 @@ public class AdvertService
                     Picture = !reader.IsDBNull(10) ? reader["Picture"] as byte[] : null,
                     User = new User
                     {
-                        Username = reader.GetString(11),
-                        Email = reader.GetString(12),
-                        PhoneNumber = reader.GetString(13)
+                        UserId = reader.GetInt32(11),
+                        Username = reader.GetString(12),
+                        Email = reader.GetString(13),
+                        PhoneNumber = reader.GetString(14)
                     },
-                    CreatedAt = reader.GetDateTime(14),
-                    IsSold = reader.GetBoolean(15)
+                    CreatedAt = reader.GetDateTime(15),
+                    IsSold = reader.GetBoolean(16)
                 });
             }
             return adverts;
