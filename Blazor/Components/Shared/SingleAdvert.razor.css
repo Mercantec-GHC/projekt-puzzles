@@ -1,0 +1,23 @@
+.single-advert {
+    gap: 20px;
+
+    & img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    & .text {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        text-align: left;
+    }
+
+    & .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+
