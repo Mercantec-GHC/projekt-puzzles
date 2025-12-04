@@ -2,6 +2,13 @@
 
 public class Advert
 {
+
+    public Advert()
+    {
+        BoxDimensions = new Vector3();
+        PuzzleDimensions = new Vector2();
+    }
+
     // Unique identifier for the advert
     public int AdvertId { get; set; }
 
