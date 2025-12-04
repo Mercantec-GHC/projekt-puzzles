@@ -22,6 +22,10 @@
             Password
             <InputText @bind-Value="loginUser.Password" type="password" required />
         </label>
+        @if (message != null)
+        {
+            <p>@message</p>
+        }
         <br />
         <button type="submit">Login</button>
     </EditForm>
@@ -36,12 +40,19 @@
 
 @code {
     User loginUser = new();
-
+    string message;
 
     private async Task Submit()
     {
-        loginUser = await us.LoginUserAsync(loginUser.Username, loginUser.Password);
-        state.login(loginUser);
-        NavigationManager.NavigateTo("/");
+        User loggedInUser = await us.LoginUserAsync(loginUser.Username, loginUser.Password);
+        if (loggedInUser != null)
+        {
+            state.login(loggedInUser);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            message = "Username or password does not match";
+        }
     }
 }

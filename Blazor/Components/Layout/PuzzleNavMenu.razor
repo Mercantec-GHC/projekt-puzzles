@@ -1,4 +1,6 @@
-﻿<nav>
+﻿@inject AppState state
+
+<nav>
     <a href="/">
         <img src="puzzleLogo.svg" alt="logo">
     </a>
@@ -9,6 +11,26 @@
 
         <li><a href="/adverts/1">Adverts</a></li>
 
+        @if (state.CurrentUser == null)
+        {
         <li><a class="highlight" href="/login">Login</a></li>
+        }
+        else
+        {
+            <li><a @onclick="Logout">Logout</a></li>
+        }
     </ul>
 </nav>
+
+
+@code {
+
+
+
+
+
+    void Logout()
+    {
+        state.logout();
+    }
+}
