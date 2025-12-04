@@ -26,7 +26,15 @@
 @code {
 
 
+     protected override void OnInitialized()
+    {
+        state.OnChange += StateHasChanged;
+    }
 
+    public void Dispose()
+    {
+        state.OnChange -= StateHasChanged;
+    }
 
 
     void Logout()

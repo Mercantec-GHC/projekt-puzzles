@@ -31,6 +31,13 @@
 
             Console.WriteLine($"Logged in User: {loggedInUser.Username}, Email: {loggedInUser.Email}");
 
+            loggedInUser = userService.LoginUserAsync("user0", "1234").Result;
+
+            if (loggedInUser == null)
+            {
+                Console.WriteLine("Login failed for user0");
+            }
+
             var advertCount = advertService.GetAdvertCountAsync().Result;
 
             Console.WriteLine($"Total Adverts Available: {advertCount}");
