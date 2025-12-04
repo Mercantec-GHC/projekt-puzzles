@@ -17,7 +17,11 @@
 
         @if (pageIndex != 1)
         {
-        <a href="/adverts/@(pageIndex - 1)">&#11164</a>
+            <a href="/adverts/@(pageIndex - 1)">&#11164</a>
+        }
+        else
+        {
+            <span>&#11164</span>
         }
 
         @pageIndex
@@ -25,6 +29,9 @@
         @if (isNextPage)
         {
         <a href="/adverts/@(pageIndex + 1)">&#11166</a>
+        }
+        else {
+            <span>&#11166</span>
         }
     </div>
 </section>
