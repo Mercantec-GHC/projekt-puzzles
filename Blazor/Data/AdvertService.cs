@@ -215,7 +215,7 @@ public class AdvertService
         }
     }
 
-    public async Task<List<Advert>> GetAdvertsByUserIdAsync(int userId)
+    public async Task<List<Advert>> GetAdvertsByUserIdAsync(int userId, int offset = 0, int limit = 100)
     {
         var adverts = new List<Advert>();
         try
@@ -245,11 +245,17 @@ public class AdvertService
                     ""Advert"" a 
                     LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
                 WHERE 
-                    a.""UserId"" = @userId",
+                    a.""UserId"" = @userId
+                OFFSET 
+                    @offset 
+                LIMIT 
+                    @limit",
                 conn
             );
 
             cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("offset", offset);
+            cmd.Parameters.AddWithValue("limit", limit);
 
             using var reader = await cmd.ExecuteReaderAsync();
 
