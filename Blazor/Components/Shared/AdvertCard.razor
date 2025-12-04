@@ -1,0 +1,27 @@
+@inject NavigationManager NavigationManager
+
+<div class="ad" @onclick="() => OpenAdvert(advert.AdvertId)">
+    <p>@advert.Title</p>
+    @if (advert.Picture != null)
+    {
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Picture)" alt="Alt" />
+    }
+    else
+    {
+        <img src="PuzzleBoxPlaceholder.svg" alt="Alt" />
+    }
+    <p>
+    <span>@advert.PieceAmount P</span>
+    <span>@(advert.Price)Kr.</span>
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public Advert advert { get; set; }
+
+    void OpenAdvert(int id)
+    {
+        NavigationManager.NavigateTo($"/advert/{id}");
+    }
+}
