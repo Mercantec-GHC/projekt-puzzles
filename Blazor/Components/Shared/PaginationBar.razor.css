@@ -1,0 +1,23 @@
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    font-size: 20px;
+    align-items: center;
+
+    & a {
+        color: var(--brass);
+        border-radius: 10px;
+        border: solid 1px transparent;
+        transition: 0.5s;
+
+        &:hover {
+            border-color: var(--brass);
+        }
+    }
+
+    & a, & span {
+        padding: 5px 10px;
+    }
+}

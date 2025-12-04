@@ -1,0 +1,37 @@
+<div class="pagination">
+
+    @if (pageIndex != 1)
+    {
+        <a href="@PreviousPageUrl">&#11164</a>
+    }
+    else
+    {
+        <span>&#11164</span>
+    }
+
+    @pageIndex
+
+    @if (isNextPageAvailable)
+    {
+    <a href="@NextPageUrl">&#11166</a>
+    }
+    else {
+        <span>&#11166</span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public required int pageIndex { get; set; }
+
+    [Parameter]
+    public required string NextPageUrl { get; set; }
+
+    [Parameter]
+    public required string PreviousPageUrl { get; set; }
+
+    [Parameter]
+    public bool isNextPageAvailable { get; set; } = false;
+
+
+}
