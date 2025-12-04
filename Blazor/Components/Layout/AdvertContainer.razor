@@ -1,0 +1,19 @@
+﻿@using System.Globalization
+@using Blazor.Components.Shared
+@inject NavigationManager NavigationManager
+
+<div class="advert-boxes">
+    @if (Adverts != null)
+    {
+        @foreach (Advert advert in Adverts)
+        {
+            <AdvertCard advert="advert" />
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Advert> Adverts { get; set; }
+
+}

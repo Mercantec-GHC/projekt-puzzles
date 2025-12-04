@@ -1,0 +1,5 @@
+.advert-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, auto));
+    gap: 10px;
+}
