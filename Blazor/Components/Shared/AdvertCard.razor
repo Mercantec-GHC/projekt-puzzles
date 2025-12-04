@@ -11,8 +11,16 @@
         <img src="PuzzleBoxPlaceholder.svg" alt="Alt" />
     }
     <p>
-    <span>@advert.PieceAmount P</span>
-    <span>@(advert.Price)Kr.</span>
+        <span>@advert.PieceAmount P</span>
+
+        @if (advert.IsSold)
+        {
+            <span class="warning">Sold</span>
+        }
+        else
+        {
+            <span>@(advert.Price)Kr.</span>
+        }
     </p>
 </div>
 

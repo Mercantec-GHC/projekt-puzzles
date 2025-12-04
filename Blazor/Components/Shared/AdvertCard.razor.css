@@ -18,6 +18,15 @@
         max-width: 150px;
         max-height: 100px;
         object-fit: contain;
-        height:100px;
+        height: 100px;
+    }
+
+    & span {
+        padding: 5px 10px;
+
+        &.warning {
+            background-color: var(--red);
+            border-radius: 10px;
+        }
     }
 }

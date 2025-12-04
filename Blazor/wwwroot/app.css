@@ -10,6 +10,7 @@
     --radius: 14px;
     --max-width: 1100px;
     --shadow: rgba(0,0,0,0.18);
+    --red: #9E1B32;
 }
 
 * {
@@ -115,6 +116,8 @@ input, input[type="text"], input[type="password"], input[type="number"], textare
     padding: 5px 10px;
     
 }
+
+
 
 
 a.gold {

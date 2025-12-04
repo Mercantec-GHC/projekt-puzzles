@@ -8,8 +8,20 @@
         <div class="text">
             <h3>@advert.PieceAmount Pieces</h3>
 
+            <p>
+                by 
+                <a href="/user/@advert.User.UserId" class="gold">@advert.User.Username</a>
+            </p>
+
+            @if (advert.IsSold)
+            {
+                <p class="warning">Has been sold!</p>
+            }
+
             <p>Price: @(advert.Price)kr.</p>
+
             <p>@advert.Description</p>
+
             
             <div>
             <p>Puzzle dimensions</p>

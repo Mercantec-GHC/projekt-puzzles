@@ -11,6 +11,10 @@
         flex-direction: column;
         gap: 20px;
         text-align: left;
+
+        & p, & h3 {
+        padding: 5px 10px;
+        }
     }
 
     & .split {
@@ -18,6 +22,9 @@
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
+
+    & .warning {
+        background-color: var(--red);
+        border-radius: 10px;
+    }
 }
-
-

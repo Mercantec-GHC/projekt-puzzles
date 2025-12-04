@@ -1,0 +1,31 @@
+@page "/user/{id:int}"
+@rendermode InteractiveServer
+@using Blazor.Components.Shared
+@inject AdvertService ad
+
+<PageTitle>User details</PageTitle>
+
+<section>
+    <AdvertContainer Adverts="adverts" />
+</section>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    List<Advert> adverts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        adverts = await ad.GetAdvertsByUserIdAsync(id);
+    }
+}
+
+
+
+
+
+
+
+
+
