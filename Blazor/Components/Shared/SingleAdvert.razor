@@ -41,7 +41,7 @@
         <div>
             @if (advert.Picture != null)
             {                
-                <img src="" data:image /jpeg;base64,@Convert.ToBase64String(advert.Picture)" alt="Alt" "" />
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Picture)" alt="Alt" />
             }
             else {
                 <img src="PuzzleBoxPlaceholder.svg" alt="Alt" />

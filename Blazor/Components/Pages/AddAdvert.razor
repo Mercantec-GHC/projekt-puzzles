@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
 @inject AdvertService ad
+@inject AppState state
 
 <PageTitle>Add advertisement</PageTitle>
 
@@ -18,35 +19,57 @@
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
             <label>
                 Image
-                <InputFile OnChange="@OnFileChange" accecpt="image/jpeg" />
+                <InputFile OnChange="@OnFileChange" accecpt="image/jpeg" required />
             </label>
             <label>
                 Puzzle Title
-                <InputText @bind-Value="advert.Title" />
+                <InputText @bind-Value="advert.Title" required />
             </label>
             <label>
                 Describtion
-                <InputTextArea @bind-Value="advert.Description" />
+                <InputTextArea @bind-Value="advert.Description" required/>
             </label>
             <label>
                 Piece amount
-                <InputNumber @bind-Value="advert.PieceAmount" />
+                <InputNumber @bind-Value="advert.PieceAmount" step="1" required />
             </label>
             <label>
                 Price
-                <InputNumber @bind-Value="advert.Price" />
+                <InputNumber @bind-Value="advert.Price" step="1" required />
             </label>
-            <label>
-                Box dimensions
-                <InputNumber @bind-Value="advert.BoxDimensions.Width" />
-                <InputNumber @bind-Value="advert.BoxDimensions.Height" />
-                <InputNumber @bind-Value="advert.BoxDimensions.Depth" />
-            </label>
-            <label>
-                Puzzle dimensions
-                <InputNumber @bind-Value="advert.PuzzleDimensions.Width" />
-                <InputNumber @bind-Value="advert.PuzzleDimensions.Height" />
-            </label>
+            <div class="form-group">
+                <h3>Box dimensions</h3>
+
+                <div class="form-group-contents">
+                    <label>
+                        Width:
+                        <InputNumber @bind-Value="advert.BoxDimensions.Width" step="0.1" />
+                    </label
+                    <label>
+                        Height
+                        <InputNumber @bind-Value="advert.BoxDimensions.Height" step="0.1" />
+                    </label>
+                    <label>
+                        Depth:
+                        <InputNumber @bind-Value="advert.BoxDimensions.Depth" step="0.1" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3>Puzzle dimensions</h3>
+
+                <div class="form-group-contents">
+                    <label>
+                        Width:
+                        <InputNumber @bind-Value="advert.PuzzleDimensions.Width" step="0.1" />
+                    </label>
+                    <label>
+                        Height:
+                        <InputNumber @bind-Value="advert.PuzzleDimensions.Height" step="0.1" />
+                    </label>
+                </div>
+            </div>
 
             <button type="submit">Login</button>
         </EditForm>
@@ -55,7 +78,6 @@
         {
             <p>@message</p>
         }
-        
     </div>
 </section>
 
@@ -65,7 +87,7 @@
 @code {
     Advert advert = new();
 
-    string message = "";
+    string message;
 
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
@@ -82,7 +104,9 @@
 
     private async Task NewAdvert()
     {
+        advert.User = state.CurrentUser;
 
+        await ad.AddAdvertAsync(advert);
 
         message = "Atvertisement has been oploaded!";
         // reset form data

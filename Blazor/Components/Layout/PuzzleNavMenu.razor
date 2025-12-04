@@ -7,8 +7,6 @@
     <ul>
         <li><a href="/">Home</a></li>
 
-        <li><a href="/add-advert">Add advert</a></li>
-
         <li><a href="/adverts/1">Adverts</a></li>
 
         @if (state.CurrentUser == null)
@@ -17,6 +15,7 @@
         }
         else
         {
+            <li><a href="/add-advert">Add advert</a></li>
             <li><a href="/user/@state.CurrentUser.UserId">@state.CurrentUser.Username</a></li>
             <li><a @onclick="Logout">Logout</a></li>
         }
