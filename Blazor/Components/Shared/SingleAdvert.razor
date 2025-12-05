@@ -1,4 +1,5 @@
-﻿@inject AppState state
+﻿@using System.Threading.Tasks
+@inject AppState state
 @inject AdvertService ad
 @inject NavigationManager NavigationManager
 
@@ -42,8 +43,10 @@
             @if (state.CurrentUser != null)
                 @if (state.CurrentUser.UserId == @advert.User.UserId)
                 {
-                    <a href="/edit-advert/@advert.AdvertId" class="brass">Edit advert</a>
-                    <button @onclick="DeleteAdvert" class="warning">Delete advert</button>
+                    <div class="button-row">
+                        <a href="/edit-advert/@advert.AdvertId" class="highlight">Edit advert</a>
+                        <button onclick="document.getElementById('delete-confirm').showModal()" class="warning">Delete advert</button>
+                    </div>
                 }
         </div>
 
@@ -61,6 +64,15 @@
     
 </div>
 
+<dialog id="delete-confirm">
+    <h3>Delete advert</h3>
+    <p>Are you sure you want to delete this advert?</p>
+
+    <div class="button-row">
+        <button class="outline" onclick="document.getElementById('delete-confirm').close()">Cancel</button>
+        <button class="warning" @onclick="DeleteAdvert">Delete</button>
+    </div>
+</dialog>
 
 
 @code {
@@ -68,15 +80,9 @@
     public Advert advert { get; set; }
 
 
-
-
-
-
-
-    private void DeleteAdvert()
+    private async Task DeleteAdvert()
     {
-        //delete advert
-
+        await ad.DeleteAdvertAsync(advert.AdvertId);
 
         NavigationManager.NavigateTo($"/user/{advert.User.Username}");
     }

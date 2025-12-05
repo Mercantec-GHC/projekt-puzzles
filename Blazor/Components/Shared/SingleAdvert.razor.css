@@ -22,5 +22,48 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
+
+        @media screen and (max-width: 800px) {
+            display: flex;
+            flex-direction: column;
+            
+            & .text {
+                order: 1;
+            }
+        }
+    }
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 0px 10px;
+
+    & > * {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+dialog {
+    color: var(--cue);
+    background: linear-gradient(var(--mahogany), var(--pocket));
+    padding: 10px;
+    border: var(--brass) 2px solid;
+    border-radius: 10px;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+
+    &[open] {
+        display: flex;
+        place-self: center;
+    }
+
+    &::backdrop {
+        background: black;
+        opacity: 0.5;
     }
 }

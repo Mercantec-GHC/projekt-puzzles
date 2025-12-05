@@ -28,11 +28,15 @@ body {
     background-size: cover;
     color: var(--cue);
     font-family: "Limelight", sans-serif;
-    padding: 20px;
+/*    padding: 20px;*/
     display: flex;
     flex-direction: column;
     gap: 30px;
     min-height: 100vh;
+
+    &:has(dialog[open]) {
+        overflow: hidden;
+    }
 }
 
 
@@ -50,6 +54,13 @@ a {
     color: var(--brass);
 }
 
+.outline {
+    border: solid 1px var(--brass);
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: transparent;
+}
+
 .highlight {
     padding: 5px 10px;
     background-color: var(--brass);
@@ -64,6 +75,13 @@ a {
     background-color: var(--red);
     border-radius: 10px;
     padding: 5px 10px;
+}
+
+a.gold {
+    &:hover {
+        color: var(--brass);
+        text-decoration: underline;
+    }
 }
 
 section {
@@ -126,12 +144,6 @@ input, input[type="text"], input[type="password"], input[type="number"], textare
 
 
 
-a.gold {
-    &:hover {
-        color: var(--brass);
-        text-decoration: underline;
-    }
-}
 
 
 label:has(input[type="file"]) {
