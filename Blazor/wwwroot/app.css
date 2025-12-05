@@ -60,6 +60,12 @@ a {
     }
 }
 
+.warning {
+    background-color: var(--red);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
 section {
     background: linear-gradient(var(--felt), var(--dark-felt));
     border: 2px solid var(--brass);

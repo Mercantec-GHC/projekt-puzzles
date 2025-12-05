@@ -1,5 +1,6 @@
-﻿
-
+﻿@inject AppState state
+@inject AdvertService ad
+@inject NavigationManager NavigationManager
 
 <div class="single-advert">
     <h1>@advert.Title</h1>
@@ -10,8 +11,10 @@
 
             <p>
                 by 
-                <a href="/user/@advert.User.UserId" class="gold">@advert.User.Username</a>
+                <a href="/user/@advert.User.Username" class="gold">@advert.User.Username</a>
             </p>
+            <p>&#9993; @advert.User.Email</p>
+            <p>&#9742; @advert.User.PhoneNumber</p>
 
             @if (advert.IsSold)
             {
@@ -35,7 +38,13 @@
             <p>Height: @advert.BoxDimensions.Height</p>
             <p>Depth: @advert.BoxDimensions.Depth</p>
             </div>
-            
+
+            @if (state.CurrentUser != null)
+                @if (state.CurrentUser.UserId == @advert.User.UserId)
+                {
+                    <a href="/edit-advert/@advert.AdvertId" class="brass">Edit advert</a>
+                    <button @onclick="DeleteAdvert" class="warning">Delete advert</button>
+                }
         </div>
 
         <div>
@@ -57,4 +66,18 @@
 @code {
     [Parameter]
     public Advert advert { get; set; }
+
+
+
+
+
+
+
+    private void DeleteAdvert()
+    {
+        //delete advert
+
+
+        NavigationManager.NavigateTo($"/user/{advert.User.Username}");
+    }
 }

@@ -23,9 +23,4 @@
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-
-    & .warning {
-        background-color: var(--red);
-        border-radius: 10px;
-    }
 }

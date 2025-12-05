@@ -6,7 +6,7 @@
     transition: 0.5s;
 
     &:hover {
-        border-color: var(--brass)
+        border-color: var(--brass);
     }
 
     & p {
@@ -23,10 +23,5 @@
 
     & span {
         padding: 5px 10px;
-
-        &.warning {
-            background-color: var(--red);
-            border-radius: 10px;
-        }
     }
 }

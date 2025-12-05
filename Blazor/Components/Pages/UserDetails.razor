@@ -1,4 +1,4 @@
-@page "/user/{id:int}"
+@page "/user/{username:string}"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
 @inject AdvertService ad
@@ -11,13 +11,13 @@
 
 @code {
     [Parameter]
-    public int id { get; set; }
+    public string username { get; set; }
 
     List<Advert> adverts;
 
     protected override async Task OnInitializedAsync()
     {
-        adverts = await ad.GetAdvertsByUserIdAsync(id);
+        adverts = await ad.GetAdvertsByUserAsync(username);
     }
 }
 
