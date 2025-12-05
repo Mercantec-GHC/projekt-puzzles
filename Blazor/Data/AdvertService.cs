@@ -384,5 +384,28 @@ public class AdvertService
             return null;
         }
     }
-    
+
+
+    public async Task DeleteAdvertAsync(int advertId)
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(
+                @"DELETE FROM 
+                    ""Advert"" 
+                WHERE 
+                    ""AdvertId"" = @advertId",
+                conn
+            );
+
+            cmd.Parameters.AddWithValue("advertId", advertId);
+            await cmd.ExecuteNonQueryAsync();
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting advert: {ex.Message}");
+        }
+    }
 }
