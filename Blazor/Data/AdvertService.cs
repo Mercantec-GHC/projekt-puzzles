@@ -123,7 +123,7 @@ public class AdvertService
                 WHERE 
                     a.""IsSold"" = FALSE
                 ORDER BY 
-                    a.""CreatedAt"" DESC 
+                    a.""CreatedAt"" DESC
                 OFFSET 
                     @offset 
                 LIMIT 
@@ -248,7 +248,7 @@ public class AdvertService
         }
     }
 
-    public async Task<List<Advert>> GetAdvertsByUserIdAsync(int userId, int offset = 0, int limit = 100)
+    public async Task<List<Advert>> GetAdvertsByUserAsync(string username, int offset = 0, int limit = 100)
     {
         var adverts = new List<Advert>();
         try
@@ -279,7 +279,10 @@ public class AdvertService
                     ""Advert"" a 
                     LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
                 WHERE 
-                    a.""UserId"" = @userId
+                    u.""Username"" = @username
+                ORDER BY 
+                    a.""IsSold"" ASC,
+                    a.""CreatedAt"" DESC
                 OFFSET 
                     @offset 
                 LIMIT 
@@ -287,7 +290,7 @@ public class AdvertService
                 conn
             );
 
-            cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("username", username);
             cmd.Parameters.AddWithValue("offset", offset);
             cmd.Parameters.AddWithValue("limit", limit);
 
@@ -342,7 +345,7 @@ public class AdvertService
 
             using var cmd = new NpgsqlCommand(
                 @"UPDATE 
-                    ""Adverts"" 
+                    ""Advert"" 
                 SET 
                     ""Title"" = @title, 
                     ""Description"" = @description, 
