@@ -19,9 +19,9 @@
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
             <FileInput OnChange="@OnFileChange" OnClear="@ClearFile" Label="Image" />
 
-            @if (imageMessage != null)
+            @if (advert.Picture != null)
             {
-                <p>@imageMessage</p>
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Picture)" alt="Alt" />
             }
 
             <label>
@@ -92,8 +92,6 @@
 
     string message;
 
-    string imageMessage;
-
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -104,16 +102,12 @@
             await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
 
             advert.Picture = ms.ToArray();
-
-            imageMessage = "Image has been set";
         }
-        else imageMessage = "";
     }
 
     private void ClearFile()
     {
         advert.Picture = null;
-        imageMessage = "Image has been cleared";
     }
 
     private async Task NewAdvert()
