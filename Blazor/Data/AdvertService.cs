@@ -343,6 +343,7 @@ public class AdvertService
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
+            //updates the advert by id when edited
             using var cmd = new NpgsqlCommand(
                 @"UPDATE 
                     ""Advert"" 
