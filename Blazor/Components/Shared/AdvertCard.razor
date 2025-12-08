@@ -2,7 +2,9 @@
 
 <div class="ad" @onclick="() => OpenAdvert(advert.AdvertId)">
     <p>@advert.Title</p>
-    <AdvertImage Picture="advert.Picture" />
+    <div class="image-container">
+        <AdvertImage Picture="advert.Picture" />
+    </div>
     <p>
         <span>@advert.PieceAmount P</span>
 

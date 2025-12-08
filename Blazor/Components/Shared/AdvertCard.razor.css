@@ -14,11 +14,14 @@
         justify-content: space-evenly;
     }
 
-    & img {
-        max-width: 150px;
-        max-height: 100px;
-        object-fit: contain;
-        border-radius: 10px;
+    & .image-container {
+
+        & img {
+            max-width: 150px;
+            max-height: 100px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
     }
 
     & span {
