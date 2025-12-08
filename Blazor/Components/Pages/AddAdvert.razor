@@ -19,8 +19,15 @@
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
             <label>
                 Image
-                <InputFile OnChange="@OnFileChange" accecpt="image/jpeg" required />
+                <InputFile OnChange="@OnFileChange" accept="image/jpeg" required />
             </label>
+            <button @onclick="ClearFile" class="outline">Clear image</button>
+
+            @if (imageMessage != null)
+            {
+                <p>@imageMessage</p>
+            }
+
             <label>
                 Puzzle Title
                 <InputText @bind-Value="advert.Title" required />
@@ -71,7 +78,7 @@
                 </div>
             </div>
 
-            <button type="submit">Login</button>
+            <button type="submit">Submit</button>
         </EditForm>
         
         @if (message != null)
@@ -89,6 +96,10 @@
 
     string message;
 
+    string imageMessage;
+
+    private string _fileInputKey = Guid.NewGuid().ToString();
+
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -99,7 +110,17 @@
             await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
 
             advert.Picture = ms.ToArray();
+
+            imageMessage = "Image has been set";
         }
+        else imageMessage = "";
+    }
+
+    private void ClearFile()
+    {
+        _fileInputKey = Guid.NewGuid().ToString();
+        advert.Picture = null;
+        imageMessage = "Image has been cleared";
     }
 
     private async Task NewAdvert()
@@ -109,7 +130,7 @@
 
         await ad.AddAdvertAsync(advert);
 
-        message = "Atvertisement has been oploaded!";
+        message = "Atvertisement has been uploaded!";
         // reset form data
         advert = new();
     }
