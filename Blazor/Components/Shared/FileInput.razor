@@ -4,7 +4,7 @@
             @(Label ?? "File")
             <InputFile OnChange="@OnFileChange" accept="image/jpeg" required />
         </label>
-        <button class="warning">Clear @(Label ?? "File")</button>
+        <button class="warning" type="button">Clear @(Label ?? "File")</button>
     </div>
     @if (fileName != null) {
         <div class="form-group-contents">
