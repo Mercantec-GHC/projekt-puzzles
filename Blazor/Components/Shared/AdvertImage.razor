@@ -1,0 +1,13 @@
+@if (Picture != null)
+{
+    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Picture)" alt="Alt" />
+}
+else
+{
+    <img src="PuzzleBoxPlaceholder.svg" alt="Alt" />
+}
+
+@code {
+    [Parameter]
+    public byte[] Picture { get; set; }
+}
