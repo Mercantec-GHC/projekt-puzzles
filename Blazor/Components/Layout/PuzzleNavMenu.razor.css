@@ -26,6 +26,7 @@
 
         & li {
             margin: 0;
+            display: inline-flex;
 
             & a {
                 padding: 5px 10px;                
@@ -36,6 +37,80 @@
                 &:hover {
                     background-color: var(--felt);
                     border-color: var(--brass);
+                }
+            }
+        }
+    }
+
+    .menu-button {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        position: unset;
+        background: none;
+        border: none;
+        left: unset;
+    }
+
+    @media screen and (max-width: 800px) {
+        .menu-button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            
+            position: fixed;
+            translate: calc(100% + 2px) 0;
+            transition: translate 0.5s;
+            top: 10px;
+            right: 0;
+
+            background-color: var(--mahogany);
+            border: var(--brass) 2px solid;
+            border-radius: 10px 0 0 10px;
+            
+            padding: 10px;
+            height: calc(100% - 20px);
+
+            width: 200px;
+            
+            & ul {
+                display: flex;
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            & li {
+                
+                & > * {
+                    flex: 1;
+                }
+
+                &:has(.highlight) {
+                    order: -1;
+                }
+            }
+            
+            &::backdrop {
+                
+                background-color: rgba(0, 0, 0, 0);
+                transition: background-color 0.5s;
+            }
+
+            &:popover-open {
+                translate: 2px 0;
+
+                &::backdrop {
+                    background-color: rgba(0, 0, 0, 0.5);
                 }
             }
         }

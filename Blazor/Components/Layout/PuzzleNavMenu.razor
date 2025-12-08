@@ -4,22 +4,26 @@
     <a href="/">
         <img src="puzzleLogo.svg" alt="logo">
     </a>
-    <ul>
-        <li><a href="/">Home</a></li>
+    <button class="menu-button" type="button" onclick="document.getElementById('nav-menu').showPopover()">Menu</button>
+    <div class="nav-links" id="nav-menu" popover="auto">
+        <ul>
+            <li><a href="/" onclick="document.getElementById('nav-menu').hidePopover()">Home</a></li>
 
-        <li><a href="/adverts/1">Adverts</a></li>
+            <li><a href="/adverts/1" onclick="document.getElementById('nav-menu').hidePopover()">Adverts</a></li>
 
-        @if (state.CurrentUser == null)
-        {
-        <li><a class="highlight" href="/login">Login</a></li>
-        }
-        else
-        {
-            <li><a href="/add-advert">Add advert</a></li>
-            <li><a href="/user/@state.CurrentUser.Username">@state.CurrentUser.Username</a></li>
-            <li><a @onclick="Logout">Logout</a></li>
-        }
-    </ul>
+            @if (state.CurrentUser == null)
+            {
+            <li><a class="highlight" href="/login" onclick="document.getElementById('nav-menu').hidePopover()">Login</a></li>
+            }
+            else
+            {
+                <li><a href="/add-advert" onclick="document.getElementById('nav-menu').hidePopover()">Add advert</a></li>
+                <li><a href="/user/@state.CurrentUser.Username" onclick="document.getElementById('nav-menu').hidePopover()">@state.CurrentUser.Username</a></li>
+                <li><a @onclick="Logout">Logout</a></li>
+            }
+        </ul>
+    
+    </div>
 </nav>
 
 

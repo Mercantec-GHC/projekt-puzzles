@@ -3,6 +3,7 @@
 @using Blazor.Components.Shared
 @inject AdvertService ad
 @inject AppState state
+@inject NavigationManager nav
 
 <PageTitle>Add advertisement</PageTitle>
 
@@ -93,6 +94,7 @@
     string message;
 
 
+
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         IBrowserFile file = e.File;
@@ -102,6 +104,14 @@
             await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
 
             advert.Picture = ms.ToArray();
+        }
+    }
+
+     protected override async Task OnInitializedAsync()
+    {
+        if (state.CurrentUser == null)
+        {
+            nav.NavigateTo($"/");
         }
     }
 

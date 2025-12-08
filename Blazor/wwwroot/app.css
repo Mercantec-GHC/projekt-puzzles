@@ -33,6 +33,8 @@ body {
     flex-direction: column;
     gap: 30px;
     min-height: 100vh;
+    
+    overflow-x: hidden;
 
     &:has(dialog[open]) {
         overflow: hidden;
