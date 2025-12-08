@@ -1,0 +1,11 @@
+﻿section div {
+
+
+
+    & img {
+        max-width: 600px;
+        max-height: 300px;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+}
