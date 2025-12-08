@@ -1,9 +1,11 @@
+@using System.Reflection.Metadata
 <div class="form-group file-input">
     <div class="form-group-contents">
         <label>
             @(Label ?? "File")
-            <InputFile OnChange="@OnFileChange" accept="image/jpeg" required />
+            <InputFile OnChange="@OnFileChange" accept="image/jpeg" required="@required" />
         </label>
+        <InputHidden @bind-Value="fileName" required="@required" />
         <button class="warning" type="button" @onclick="ClearFile">Clear @(Label ?? "File")</button>
     </div>
     @if (fileName != null) {
@@ -20,6 +22,9 @@
 
     [Parameter]
     public EventCallback<InputFileChangeEventArgs> OnClear { get; set; }
+
+    [Parameter]
+    public bool required { get; set; } = false;
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
