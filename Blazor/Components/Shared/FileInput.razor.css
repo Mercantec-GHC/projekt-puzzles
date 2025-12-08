@@ -6,4 +6,13 @@
         cursor: pointer;
         flex: 2;
     }
+
+    .selected-file {
+        flex-direction: column;
+        text-align: left;
+        gap: 5px;
+        padding: 10px;
+        border: solid 2px var(--light-felt);
+        border-radius: 10px;
+    }
 }

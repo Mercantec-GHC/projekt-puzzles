@@ -17,7 +17,7 @@
 <section>
     <div>
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
-            <FileInput OnChange="@OnFileChange" Label="Image" />
+            <FileInput OnChange="@OnFileChange" OnClear="@ClearFile" Label="Image" />
 
             @if (imageMessage != null)
             {
@@ -94,8 +94,6 @@
 
     string imageMessage;
 
-    private string _fileInputKey = Guid.NewGuid().ToString();
-
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -114,7 +112,6 @@
 
     private void ClearFile()
     {
-        _fileInputKey = Guid.NewGuid().ToString();
         advert.Picture = null;
         imageMessage = "Image has been cleared";
     }
