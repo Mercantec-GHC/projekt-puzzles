@@ -3,6 +3,9 @@
 @inject AdvertService ad
 @inject AppState state
 @inject NavigationManager nav
+@using Blazor.Components.Shared
+@inject NavigationManager nav
+
 
 <PageTitle>Edit advertisement</PageTitle>
 
@@ -16,7 +19,10 @@
 
 <section>
     <div>
-        <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
+        <EditForm Model="@advert" OnValidSubmit="@UpdateAdvert" FormName="AdvertForm">
+
+            <FileInput OnChange="@OnFileChange" Label="Image" />
+
             <label>
                 Puzzle Title
                 <InputText @bind-Value="advert.Title" required />
@@ -31,7 +37,7 @@
             </label>
             <label>
                 Price
-                <InputNumber @bind-Value="advert.Price" step="1" required />
+                <InputNumber @bind-Value="advert.Price" step="0.01" required />
             </label>
             <div class="form-group">
                 <h3>Box dimensions</h3>
@@ -86,17 +92,46 @@
     Advert advert = new();
     string message;
 
+    private string _fileInputKey = Guid.NewGuid().ToString();
+
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.File;
+        if (file != null)
+        {
+            using MemoryStream ms = new MemoryStream();
+            await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
+
+            advert.Picture = ms.ToArray();
+        }
+    }
+
+    private void ClearFile()
+    {
+        _fileInputKey = Guid.NewGuid().ToString();
+        advert.Picture = null;
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        if (state.CurrentUser == null)
+        {
+            nav.NavigateTo($"/advert/{id}");
+            return;
+        }
+        
         advert = await ad.GetAdvertByIdAsync(id);
+
         if (state.CurrentUser.UserId != advert.User.UserId)
         {
             nav.NavigateTo($"/advert/{id}");
         }
     }
 
-    private async Task NewAdvert()
+    private async Task UpdateAdvert()
     {
-        
+        await ad.UpdateAdvertAsync(advert);
+        nav.NavigateTo($"advert/{id}");
     }
 }
