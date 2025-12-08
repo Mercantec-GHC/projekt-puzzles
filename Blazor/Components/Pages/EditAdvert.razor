@@ -1,10 +1,81 @@
 ﻿@page "/edit-advert/{id:int}"
+@rendermode InteractiveServer
+@inject AdvertService ad
+@inject AppState state
+@inject NavigationManager nav
+
+<PageTitle>Edit advertisement</PageTitle>
 
 
 
+<section>
+    <div>
+        <h1>Edit advertisement</h1>
+    </div>
+</section>
 
+<section>
+    <div>
+        <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
+            <label>
+                Puzzle Title
+                <InputText @bind-Value="advert.Title" required />
+            </label>
+            <label>
+                Describtion
+                <InputTextArea @bind-Value="advert.Description" required/>
+            </label>
+            <label>
+                Piece amount
+                <InputNumber @bind-Value="advert.PieceAmount" step="1" required />
+            </label>
+            <label>
+                Price
+                <InputNumber @bind-Value="advert.Price" step="1" required />
+            </label>
+            <div class="form-group">
+                <h3>Box dimensions</h3>
 
+                <div class="form-group-contents">
+                    <label>
+                        Width:
+                        <InputNumber @bind-Value="advert.BoxDimensions.Width" step="0.1" />
+                    </label
+                    <label>
+                        Height
+                        <InputNumber @bind-Value="advert.BoxDimensions.Height" step="0.1" />
+                    </label>
+                    <label>
+                        Depth:
+                        <InputNumber @bind-Value="advert.BoxDimensions.Depth" step="0.1" />
+                    </label>
+                </div>
+            </div>
 
+            <div class="form-group">
+                <h3>Puzzle dimensions</h3>
+
+                <div class="form-group-contents">
+                    <label>
+                        Width:
+                        <InputNumber @bind-Value="advert.PuzzleDimensions.Width" step="0.1" />
+                    </label>
+                    <label>
+                        Height:
+                        <InputNumber @bind-Value="advert.PuzzleDimensions.Height" step="0.1" />
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit">Change advert</button>
+        </EditForm>
+        
+        @if (message != null)
+        {
+            <p>@message</p>
+        }
+    </div>
+</section>
 
 
 
@@ -12,8 +83,20 @@
     [Parameter]
     public int id { get; set; }
 
+    Advert advert = new();
+    string message;
 
+    protected override async Task OnInitializedAsync()
+    {
+        advert = await ad.GetAdvertByIdAsync(id);
+        if (state.CurrentUser.UserId != advert.User.UserId)
+        {
+            nav.NavigateTo($"/advert/{id}");
+        }
+    }
 
-
-
+    private async Task NewAdvert()
+    {
+        
+    }
 }
