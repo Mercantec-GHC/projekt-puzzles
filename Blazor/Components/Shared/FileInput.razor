@@ -1,0 +1,33 @@
+<div class="form-group file-input">
+    <div class="form-group-contents">
+        <label>
+            @(Label ?? "File")
+            <InputFile OnChange="@OnFileChange" accept="image/jpeg" required />
+        </label>
+        <button class="warning">Clear @(Label ?? "File")</button>
+    </div>
+    @if (fileName != null) {
+        <div class="form-group-contents">
+            @fileName
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        fileName = e.File.Name;
+        await OnChange.InvokeAsync(e);
+    }
+
+
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    private string? fileName;
+}

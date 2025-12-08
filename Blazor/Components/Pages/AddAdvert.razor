@@ -17,11 +17,7 @@
 <section>
     <div>
         <EditForm Model="@advert" OnValidSubmit="@NewAdvert" FormName="AdvertForm">
-            <label>
-                Image
-                <InputFile OnChange="@OnFileChange" accept="image/jpeg" required />
-            </label>
-            <button @onclick="ClearFile" class="outline">Clear image</button>
+            <FileInput OnChange="@OnFileChange" Label="Image" />
 
             @if (imageMessage != null)
             {

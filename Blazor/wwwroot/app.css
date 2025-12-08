@@ -146,19 +146,7 @@ input, input[type="text"], input[type="password"], input[type="number"], textare
 
 
 
-label:has(input[type="file"]) {
-    padding: 5px 10px;
-    background-color: var(--brass);
-    border-radius: 10px;
 
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-input[type="file"] {
-    display: none;
-}
 
 form {
     display: flex;
@@ -187,6 +175,20 @@ form {
     & label:has(:not(input[type="file"])) {
         display: flex;
         flex-direction: column;
+    }
+
+    & label:has(input[type="file"]) {
+        padding: 5px 10px;
+        background-color: var(--brass);
+        border-radius: 10px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    & input[type="file"] {
+        display: none;
     }
 }
 
