@@ -18,6 +18,9 @@
     [Parameter]
     public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
 
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnClear { get; set; }
+
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         fileName = e.File.Name;
@@ -27,6 +30,7 @@
     private void ClearFile()
     {
         fileName = null;
+        OnClear.InvokeAsync();
     }
 
 
