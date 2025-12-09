@@ -1,20 +1,40 @@
 ﻿@rendermode InteractiveServer
 @inject AdvertService ad
 
-<div class="search">
+<div>
     <EditForm Model="@search" OnValidSubmit="@Search" FormName="SearchField">
+        <div class="search-row">
+            <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @oninput="UpdateSuggetions" class="outline"></InputText>
 
-        <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @oninput="UpdateSuggetions" class="outline"></InputText>
-
-        <datalist id="search-list">
-            @if (adverts != null)
-            {    
-                @foreach (Advert advert in adverts)
-                {
-                    <option value="@advert.Title" label="@advert.Description"></option>
+            <datalist id="search-list">
+                @if (adverts != null)
+                {    
+                    @foreach (Advert advert in adverts)
+                    {
+                        <option value="@advert.Title" label="@advert.Description"></option>
+                    }
                 }
-            }
-        </datalist>
+            </datalist>
+
+            <label>
+                Order by
+                <select @bind="@orderBy">
+                    <option value="Price">Price</option>
+                    <option value="CreatedAt">Date</option>
+                    <option value="Pieces">Pieces</option>
+                </select>
+            </label>
+            <label>
+                In order
+                <select @bind="@inOrder">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </label>
+
+            <p>@inOrder</p>
+            <p>@orderBy</p>
+        </div>
     </EditForm>
 </div>
 
@@ -23,8 +43,11 @@
     public EventCallback<string> OnSearch { get; set; }
 
     SearchParam search = new();
-
     List<Advert> adverts;
+
+    string orderBy = "CreatedAt";
+    string inOrder = "desc";
+
 
     private async Task Search()
     {

@@ -1,0 +1,13 @@
+﻿.search-row {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+
+    & select {
+        background-color: var(--felt);
+        color: var(--cue);
+        padding: 5px 10px;
+        border: solid 2px var(--brass);
+        border-radius: 10px;
+    }
+}
