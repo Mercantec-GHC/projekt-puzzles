@@ -9,7 +9,7 @@
     & a {
         color: var(--brass);
         border-radius: 10px;
-        border: solid 1px transparent;
+        border: solid 2px transparent;
         transition: 0.5s;
 
         &:hover {

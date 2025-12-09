@@ -11,7 +11,7 @@
             {    
                 @foreach (Advert advert in adverts)
                 {
-                    <option>@advert.Title</option>
+                    <option value="@advert.Title" label="@advert.Description"></option>
                 }
             }
         </datalist>

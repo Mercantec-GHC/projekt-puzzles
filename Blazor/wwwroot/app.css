@@ -57,7 +57,7 @@ a {
 }
 
 .outline {
-    border: solid 1px var(--brass);
+    border: solid 2px var(--brass);
     border-radius: 10px;
     padding: 5px 10px;
     background-color: transparent;
@@ -94,6 +94,7 @@ section {
     display: flex;
     flex-direction: column;
     text-align: center;
+    gap: 10px;
 
     & > div {
        padding: 10px;
@@ -218,23 +219,8 @@ h1:focus {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    outline: 1px solid var(--brass);
 }
 
 .invalid {
