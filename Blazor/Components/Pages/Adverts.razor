@@ -9,12 +9,16 @@
 <section>
     <div>
         <h1>Adverts</h1>
+        @* @if (debug != null)
+        {
+            <p>@debug</p>
+        } *@
     </div>
 </section>
 
 <section>
     
-    <SearchField />
+    <SearchField OnSearch="OnSearch" />
 
     <div>
         <AdvertContainer Adverts="adverts" />
@@ -40,6 +44,10 @@
     bool isNextPage = true;
 
 
+    //string debug;
+
+
+
     List<Advert> adverts;
 
 
@@ -49,6 +57,8 @@
         advertCount = await ad.GetAdvertCountAsync(searchTerm: searchText);
 
         await LoadAdverts();
+
+        //debug = searchParam;
     }
 
     protected override async Task OnParametersSetAsync()
