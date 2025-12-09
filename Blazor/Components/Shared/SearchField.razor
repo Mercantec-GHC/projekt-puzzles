@@ -1,0 +1,41 @@
+﻿@rendermode InteractiveServer
+@inject AdvertService ad
+
+<div class="search">
+    <EditForm Model="@search" OnValidSubmit="@Search" FormName="SearchField">
+
+        <InputText type="search" @bind-Value="@search.SearchText" list="search-list"></InputText>
+
+        <datalist id="search-list">
+            @if (adverts != null)
+            {    
+                @foreach (Advert advert in adverts)
+                {
+                    <option>@advert.Title</option>
+                }
+            }
+        </datalist>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    SearchParam search = new();
+
+    List<Advert> adverts;
+
+    private async Task Search()
+    {
+        adverts = await ad.GetAllAdvertsAsync(limit:5, searchTerm:search.SearchText);
+
+        await OnSearch.InvokeAsync(search.SearchText);
+    }
+
+
+    private class SearchParam
+    {
+        public string SearchText { get; set; }
+    }
+}
