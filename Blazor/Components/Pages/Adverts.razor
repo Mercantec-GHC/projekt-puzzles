@@ -13,6 +13,9 @@
 </section>
 
 <section>
+    
+    <SearchField />
+
     <div>
         <AdvertContainer Adverts="adverts" />
     </div>
@@ -32,6 +35,7 @@
     const int adsPerPage = 40;
     int pageOffset;
     int advertCount;
+    string searchText;
 
     bool isNextPage = true;
 
@@ -39,14 +43,24 @@
     List<Advert> adverts;
 
 
+    private async Task OnSearch(string searchParam)
+    {
+        searchText = searchParam;
+        advertCount = await ad.GetAdvertCountAsync(searchTerm: searchText);
 
-
+        await LoadAdverts();
+    }
 
     protected override async Task OnParametersSetAsync()
     {
+        await LoadAdverts();
+    }
+
+    private async Task LoadAdverts()
+    {
         pageOffset = adsPerPage * (pageIndex - 1);
 
-        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset);
+        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: searchText);
 
         if ((pageOffset + adsPerPage) > advertCount)
         {
