@@ -79,15 +79,15 @@ public class AdvertService
 
         if (isSold.HasValue)
         {
-            conditions.Add($@"a.""IsSold"" = @isSold");
+            conditions.Add($@"""IsSold"" = @isSold");
         }
 
         if (!string.IsNullOrEmpty(searchTerm))
         {
             OrConditions.Add(new List<string>
             {
-                $@"a.""Title"" ILIKE '%' || @searchTerm || '%'",
-                $@"a.""Description"" ILIKE '%' || @searchTerm || '%'"
+                $@"""Title"" ILIKE '%' || @searchTerm || '%'",
+                $@"""Description"" ILIKE '%' || @searchTerm || '%'"
             });
         }
         
