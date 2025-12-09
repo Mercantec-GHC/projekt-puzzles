@@ -44,6 +44,9 @@
                 @if (state.CurrentUser.UserId == @advert.User.UserId)
                 {
                     <div class="button-row">
+                        <button @onclick="ToggleSold">@soldButtonText</button>
+                    </div>
+                    <div class="button-row">
                         <a href="/edit-advert/@advert.AdvertId" class="highlight">Edit advert</a>
                         <button onclick="document.getElementById('delete-confirm').showModal()" class="warning">Delete advert</button>
                     </div>
@@ -73,11 +76,37 @@
     [Parameter]
     public Advert advert { get; set; }
 
+    string soldButtonText = "Mark as sold";
+
 
     private async Task DeleteAdvert()
     {
         await ad.DeleteAdvertAsync(advert.AdvertId);
 
         NavigationManager.NavigateTo($"/user/{advert.User.Username}");
+    }
+
+    private async Task ToggleSold()
+    {
+        if (advert.IsSold)
+        {
+            advert.IsSold = false;
+            soldButtonText = "Mark as sold";
+        }
+        else
+        {
+            advert.IsSold = true;
+            soldButtonText = "Mark as for sale";
+        }
+
+        await ad.UpdateAdvertAsync(advert);
+    }
+
+    protected override void OnInitialized()
+    {
+        if (advert.IsSold)
+        {
+            soldButtonText = "Mark as for sale";
+        }
     }
 }

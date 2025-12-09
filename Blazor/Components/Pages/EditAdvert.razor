@@ -95,7 +95,11 @@
 
     Advert advert = new();
     string message;
+    string soldButtonText = "Mark as sold";
 
+
+
+    
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -121,7 +125,7 @@
             nav.NavigateTo($"/advert/{id}");
             return;
         }
-        
+
         advert = await ad.GetAdvertByIdAsync(id);
 
         if (state.CurrentUser.UserId != advert.User.UserId)
