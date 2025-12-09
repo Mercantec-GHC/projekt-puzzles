@@ -8,7 +8,7 @@
             var advertService = new AdvertService();
             var userService = new UserService();
 
-            var adverts = advertService.GetAllAdvertsAsync().Result;
+            var adverts = advertService.GetAllAdvertsAsync(searchTerm: "leat").Result;
 
             foreach (var advert in adverts)
             {
@@ -20,7 +20,7 @@
 
             Console.WriteLine($"Fetched Advert by ID 1: Title: {advertById.Title}, Description: {advertById.Description} By User: {advertById.User.UserId}");
 
-            var getUserAdvert = advertService.GetAdvertsByUserIdAsync(2).Result;
+            var getUserAdvert = advertService.GetAdvertsByUserAsync("user1").Result;
 
             foreach (var advert in getUserAdvert)
             {

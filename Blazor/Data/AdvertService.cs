@@ -77,7 +77,12 @@ public class AdvertService
             await conn.OpenAsync();
 
             using var cmd = new NpgsqlCommand(
-                @"SELECT COUNT(*) FROM ""Advert"" WHERE ""IsSold"" = FALSE",
+                @"SELECT 
+                    COUNT(*) 
+                FROM 
+                    ""Advert"" 
+                WHERE 
+                    ""IsSold"" = FALSE",
                 conn
             );
 
@@ -90,16 +95,38 @@ public class AdvertService
         }
     }
 
-    public async Task<List<Advert>> GetAllAdvertsAsync(int offset = 0, int limit = 100)
+    public async Task<List<Advert>> GetAllAdvertsAsync(int offset = 0, int limit = 100, bool? isSold = false, string? searchTerm = null)
     {
         var adverts = new List<Advert>();
+        List<string> conditions = new List<string>();
+        List<List<string>> OrConditions = new List<List<string>>();
+
+        string whereString = "";
+
+        if (isSold.HasValue)
+        {
+            conditions.Add($@"a.""IsSold"" = @isSold");
+        }
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            OrConditions.Add(new List<string>
+            {
+                $@"a.""Title"" ILIKE '%' || @searchTerm || '%'",
+                $@"a.""Description"" ILIKE '%' || @searchTerm || '%'"
+            });
+        }
+
+        conditions.Concat(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
+        whereString = string.Join(" AND ", conditions);
+
         try
         {
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
             using var cmd = new NpgsqlCommand(
-                @"SELECT 
+                $@"SELECT 
                     a.""AdvertId"", 
                     a.""Title"", 
                     a.""Description"", 
@@ -121,7 +148,7 @@ public class AdvertService
                     ""Advert"" a 
                     LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
                 WHERE 
-                    a.""IsSold"" = FALSE
+                    {whereString}
                 ORDER BY 
                     a.""CreatedAt"" DESC
                 OFFSET 
@@ -133,6 +160,16 @@ public class AdvertService
 
             cmd.Parameters.AddWithValue("offset", offset);
             cmd.Parameters.AddWithValue("limit", limit);
+
+            if (isSold.HasValue)
+            {
+                cmd.Parameters.AddWithValue("isSold", isSold.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                cmd.Parameters.AddWithValue("searchTerm", searchTerm);
+            }
 
             using var reader = await cmd.ExecuteReaderAsync();
 
