@@ -4,7 +4,7 @@
 <div class="search">
     <EditForm Model="@search" OnValidSubmit="@Search" FormName="SearchField">
 
-        <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @onchange="UpdateSuggetions"></InputText>
+        <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @oninput="UpdateSuggetions" class="outline"></InputText>
 
         <datalist id="search-list">
             @if (adverts != null)
@@ -33,9 +33,10 @@
         await OnSearch.InvokeAsync(search.SearchText);
     }
 
-    private async Task UpdateSuggetions()
+    private async Task UpdateSuggetions(ChangeEventArgs e)
     {
-        
+        search.SearchText = e.Value?.ToString();
+        adverts = await ad.GetAllAdvertsAsync(limit: 5, searchTerm: search.SearchText);
     }
 
 
