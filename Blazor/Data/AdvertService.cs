@@ -69,22 +69,55 @@ public class AdvertService
         }
     }
 
-    public async Task<int> GetAdvertCountAsync()
+    public async Task<int> GetAdvertCountAsync(bool? isSold = false, string? searchTerm = null)
     {
+
+        List<string> conditions = new List<string>();
+        List<List<string>> OrConditions = new List<List<string>>();
+
+        string whereString = "";
+
+        if (isSold.HasValue)
+        {
+            conditions.Add($@"a.""IsSold"" = @isSold");
+        }
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            OrConditions.Add(new List<string>
+            {
+                $@"a.""Title"" ILIKE '%' || @searchTerm || '%'",
+                $@"a.""Description"" ILIKE '%' || @searchTerm || '%'"
+            });
+        }
+        
+        conditions.AddRange(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
+        whereString = string.Join(" AND ", conditions);
+
         try
         {
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
             using var cmd = new NpgsqlCommand(
-                @"SELECT 
+                $@"SELECT 
                     COUNT(*) 
                 FROM 
                     ""Advert"" 
                 WHERE 
-                    ""IsSold"" = FALSE",
+                    {whereString}",
                 conn
             );
+
+            if (isSold.HasValue)
+            {
+                cmd.Parameters.AddWithValue("isSold", isSold.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                cmd.Parameters.AddWithValue("searchTerm", searchTerm);
+            }
 
             var count = (long)await cmd.ExecuteScalarAsync();
             return (int)count;
