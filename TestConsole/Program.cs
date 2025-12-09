@@ -8,7 +8,7 @@
             var advertService = new AdvertService();
             var userService = new UserService();
 
-            var adverts = advertService.GetAllAdvertsAsync(searchTerm: "leat").Result;
+            var adverts = advertService.GetAllAdvertsAsync(searchTerm: "Puzz", limit: 4).Result;
 
             foreach (var advert in adverts)
             {

@@ -116,8 +116,8 @@ public class AdvertService
                 $@"a.""Description"" ILIKE '%' || @searchTerm || '%'"
             });
         }
-
-        conditions.Concat(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
+        
+        conditions.AddRange(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
         whereString = string.Join(" AND ", conditions);
 
         try
