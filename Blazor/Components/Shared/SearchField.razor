@@ -12,6 +12,7 @@
             <datalist id="search-list">
                 @if (adverts != null)
                 {    
+                    <option value="@search.SearchText"></option>
                     @foreach (Advert advert in adverts)
                     {
                         <option value="@advert.Title" label="@advert.Description"></option>
@@ -92,7 +93,7 @@
             await Search();
             return;
         }
-        adverts = await ad.GetAllAdvertsAsync(limit: 5, searchTerm: search.SearchText);
+        adverts = await ad.GetAllAdvertsAsync(limit: 4, searchTerm: search.SearchText);
     }
 
 

@@ -8,7 +8,14 @@ public class AdvertService
         _connectionString = ConnectionString.DefaultConnection;
     }
 
-    private string GetWhereClause(bool? isSold = false, string? searchTerm = null, string? username = null, int? advertId = null)
+    private string GetWhereClause(
+        bool? isSold = false, 
+        string? searchTerm = null, 
+        string? username = null, 
+        int? advertId = null,
+        double? minPrice = null,
+        double? maxPrice = null
+    )
     {
         List<string> conditions = new List<string>();
         List<List<string>> OrConditions = new List<List<string>>();
@@ -36,13 +43,28 @@ public class AdvertService
         {
             conditions.Add($@"a.""AdvertId"" = @advertId");
         }
+        if (minPrice.HasValue)
+        {
+            conditions.Add($@"a.""Price"" >= @minPrice");
+        }
+        if (maxPrice.HasValue)
+        {
+            conditions.Add($@"a.""Price"" <= @maxPrice");
+        }
         
         conditions.AddRange(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
         whereString = string.Join(" AND ", conditions);
         return whereString;
     }
 
-    private void AddWhereParameters(NpgsqlCommand cmd, bool? isSold = false, string? searchTerm = null, string? username = null, int? advertId = null)
+    private void AddWhereParameters(NpgsqlCommand cmd, 
+        bool? isSold = false, 
+        string? searchTerm = null, 
+        string? username = null, 
+        int? advertId = null,
+        double? minPrice = null,
+        double? maxPrice = null
+    )
     {
         if (isSold.HasValue)
         {
@@ -60,6 +82,15 @@ public class AdvertService
         if (advertId.HasValue)
         {
             cmd.Parameters.AddWithValue("advertId", advertId.Value);
+        }
+
+        if (minPrice.HasValue)
+        {
+            cmd.Parameters.AddWithValue("minPrice", minPrice.Value);
+        }
+        if (maxPrice.HasValue)
+        {
+            cmd.Parameters.AddWithValue("maxPrice", maxPrice.Value);
         }
     }
 
@@ -124,7 +155,7 @@ public class AdvertService
         }
     }
 
-    public async Task<dynamic[]> GetAdvertLimits(bool? isSold = false, string? searchTerm = null)
+    public async Task<dynamic[]> GetAdvertLimits(bool? isSold = false, string? searchTerm = null, double? minPrice = null, double? maxPrice = null)
     {
         try
         {
@@ -139,20 +170,19 @@ public class AdvertService
                 FROM 
                     ""Advert"" a
                 WHERE 
-                    {GetWhereClause(isSold: isSold, searchTerm: searchTerm)}",
+                    {GetWhereClause(isSold: isSold, searchTerm: searchTerm, minPrice: minPrice, maxPrice: maxPrice)}",
                 conn
             );
 
-            AddWhereParameters(cmd, isSold: isSold, searchTerm: searchTerm);
-
+            AddWhereParameters(cmd, isSold: isSold, searchTerm: searchTerm, minPrice: minPrice, maxPrice: maxPrice);
 
             var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
                 int count = reader.GetInt32(0);
-                double maxPrice = reader.IsDBNull(1) ? 0 : reader.GetDouble(1);
+                double maxPriceResult = reader.IsDBNull(1) ? 0 : reader.GetDouble(1);
                 int maxPieceAmount = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
-                return new dynamic[] { count, maxPrice, maxPieceAmount };
+                return new dynamic[] { count, maxPriceResult, maxPieceAmount };
             }
         } catch (Exception ex)
         {
@@ -173,16 +203,37 @@ public class AdvertService
         return limits[2];
     }
 
-    public async Task<int> GetAdvertCountAsync(bool? isSold = false, string? searchTerm = null)
+    public async Task<int> GetAdvertCountAsync(
+        bool? isSold = false, 
+        string? searchTerm = null, 
+        double? minPrice = null, 
+        double? maxPrice = null
+    )
     {
-        var limits = await GetAdvertLimits(isSold, searchTerm);
+        var limits = await GetAdvertLimits(isSold, searchTerm, minPrice, maxPrice);
         return limits[0];
     }
 
-    public async Task<List<Advert>> GetAllAdvertsAsync(int offset = 0, int limit = 100, bool? isSold = false, string? searchTerm = null, string? username = null, int? advertId = null)
+    public async Task<List<Advert>> GetAllAdvertsAsync(
+        int offset = 0, 
+        int limit = 100, 
+        bool? isSold = false, 
+        string? searchTerm = null, 
+        string? username = null, 
+        int? advertId = null, 
+        double? minPrice = null, 
+        double? maxPrice = null
+    )
     {
         var adverts = new List<Advert>();
-        string whereString = GetWhereClause(isSold: isSold, searchTerm: searchTerm, username: username, advertId: advertId);
+        string whereString = GetWhereClause(
+            isSold: isSold, 
+            searchTerm: searchTerm, 
+            username: username, 
+            advertId: advertId, 
+            minPrice: minPrice, 
+            maxPrice: maxPrice
+        );
 
         try
         {
@@ -226,7 +277,14 @@ public class AdvertService
             cmd.Parameters.AddWithValue("offset", offset);
             cmd.Parameters.AddWithValue("limit", limit);
 
-            AddWhereParameters(cmd, isSold: isSold, searchTerm: searchTerm, username: username, advertId: advertId);
+            AddWhereParameters(cmd, 
+                isSold: isSold, 
+                searchTerm: searchTerm, 
+                username: username, 
+                advertId: advertId, 
+                minPrice: minPrice, 
+                maxPrice: maxPrice
+            );
 
             using var reader = await cmd.ExecuteReaderAsync();
 
