@@ -4,7 +4,10 @@
 <div>
     <EditForm Model="@search" OnValidSubmit="@Search" FormName="SearchField">
         <div class="search-row">
-            <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @oninput="UpdateSuggetions" class="outline"></InputText>
+            <label>
+                Search
+                <InputText type="search" @bind-Value="@search.SearchText" list="search-list" @oninput="UpdateSuggetions"></InputText>
+            </label>
 
             <datalist id="search-list">
                 @if (adverts != null)
@@ -16,6 +19,12 @@
                 }
             </datalist>
 
+            <button type="submit">Search</button>
+        </div>
+
+        <div class="search-row">
+
+            
             <label>
                 Filter range
                 <select @bind="@search.FilterRange">
@@ -31,7 +40,7 @@
                 To
                 <InputNumber @bind-Value="search.RangeMax" min="0"></InputNumber>
             </label>
-
+            
             <label>
                 Order by
                 <select @bind="@search.OrderBy">
@@ -48,12 +57,13 @@
                 </select>
             </label>
 
-            <p>@search.OrderBy</p>
+            @* <p>@search.OrderBy</p>
             <p>@search.InOrder</p>
 
             <p>@search.FilterRange</p>
             <p>@search.RangeMin</p>
-            <p>@search.RangeMax</p>
+            <p>@search.RangeMax</p> *@
+            
         </div>
     </EditForm>
 </div>
