@@ -2,12 +2,41 @@
     display: flex;
     flex-direction: row;
     gap: 30px;
+    flex-wrap: wrap;
+    align-items: end;
 
-    & select {
+    & select, input {
         background-color: var(--felt);
         color: var(--cue);
         padding: 5px 10px;
-        border: solid 2px var(--brass);
+        border: solid 2px var(--light-felt);
         border-radius: 10px;
+        transition: 0.5s;
+        outline: solid 1px transparent;
+        
+        &:hover {
+            border-color: var(--brass);
+        }
     }
+
+    & label {
+        gap: 10px;
+        flex: 1;
+    }
+
+
+    
+    
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: center;
+
+}
+
+button {
+    padding: 5px 15px;
 }
