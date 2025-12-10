@@ -17,8 +17,24 @@
             </datalist>
 
             <label>
+                Filter range
+                <select @bind="@search.FilterRange">
+                    <option value="Price">Price</option>
+                    <option value="Pieces">Pieces</option>
+                </select>
+            </label>
+            <label>
+                From
+                <InputNumber @bind-Value="search.RangeMin" min="0"></InputNumber>
+            </label>
+            <label>
+                To
+                <InputNumber @bind-Value="search.RangeMax" min="0"></InputNumber>
+            </label>
+
+            <label>
                 Order by
-                <select @bind="@orderBy">
+                <select @bind="@search.OrderBy">
                     <option value="Price">Price</option>
                     <option value="CreatedAt">Date</option>
                     <option value="Pieces">Pieces</option>
@@ -26,14 +42,18 @@
             </label>
             <label>
                 In order
-                <select @bind="@inOrder">
+                <select @bind="@search.InOrder">
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                 </select>
             </label>
 
-            <p>@inOrder</p>
-            <p>@orderBy</p>
+            <p>@search.OrderBy</p>
+            <p>@search.InOrder</p>
+
+            <p>@search.FilterRange</p>
+            <p>@search.RangeMin</p>
+            <p>@search.RangeMax</p>
         </div>
     </EditForm>
 </div>
@@ -45,8 +65,7 @@
     SearchParam search = new();
     List<Advert> adverts;
 
-    string orderBy = "CreatedAt";
-    string inOrder = "desc";
+
 
 
     private async Task Search()
@@ -70,5 +89,10 @@
     private class SearchParam
     {
         public string SearchText { get; set; }
+        public string OrderBy = "CreatedAt";
+        public string InOrder = "desc";
+        public string FilterRange = "Pieces";
+        public int RangeMin { get; set; }
+        public int RangeMax { get; set; }
     }
 }
