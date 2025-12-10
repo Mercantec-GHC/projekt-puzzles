@@ -1,0 +1,6 @@
+﻿img {
+    border-radius: 10px;
+    max-width: 600px;
+    max-height: 300px;
+    object-fit: contain;
+}
