@@ -36,6 +36,10 @@
     private async Task UpdateSuggetions(ChangeEventArgs e)
     {
         search.SearchText = e.Value?.ToString();
+        if (string.IsNullOrEmpty(search.SearchText)) {
+            await Search();
+            return;
+        }
         adverts = await ad.GetAllAdvertsAsync(limit: 5, searchTerm: search.SearchText);
     }
 
