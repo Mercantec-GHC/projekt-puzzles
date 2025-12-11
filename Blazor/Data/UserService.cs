@@ -85,7 +85,6 @@ public class UserService
                         Username = reader.GetString(1),
                         Email = reader.GetString(2),
                         PhoneNumber = reader.GetString(3),
-                        PassHash = reader.GetString(4),
                         CreatedAt = reader.GetDateTime(5)
                     };
                 }
@@ -96,5 +95,57 @@ public class UserService
             Console.WriteLine($"Error logging in user: {ex.Message}");
         }
         return null;
+    }
+
+    public async Task UpdateUserAsync(User user)
+    {
+        List<string> updateFields = new List<string>();
+        if (user.Password != null)
+        {
+            updateFields.Add($@"""PassHash"" = @passhash");
+        }
+        if (user.Email != null)
+        {
+            updateFields.Add($@"""Email"" = @email");
+        }
+        if (user.PhoneNumber != null)
+        {
+            updateFields.Add($@"""PhoneNumber"" = @phonenumber");
+        }
+
+        try
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand(
+                $@"UPDATE 
+                    ""UserAccounts"" 
+                SET 
+                    {string.Join(", ", updateFields)} 
+                WHERE 
+                    ""UserId"" = @userid",
+                conn
+            );
+            if (user.Password != null)
+            {
+                user.PassHash = hashPassword(user.Password);
+                cmd.Parameters.AddWithValue("passhash", user.PassHash);
+            }
+            if (user.Email != null)
+            {
+                cmd.Parameters.AddWithValue("email", user.Email);
+            }
+            if (user.PhoneNumber != null)
+            {
+                cmd.Parameters.AddWithValue("phonenumber", user.PhoneNumber);
+            }
+            cmd.Parameters.AddWithValue("userid", user.UserId);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating user: {ex.Message}");
+        }
     }
 }
