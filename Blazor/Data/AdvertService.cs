@@ -208,7 +208,8 @@ public class AdvertService
         double? minPrice = null, 
         double? maxPrice = null, 
         int? minPieceAmount = null, 
-        int? maxPieceAmount = null
+        int? maxPieceAmount = null,
+        string? username = null
     )
     {
         try
@@ -231,7 +232,8 @@ public class AdvertService
                             minPrice: minPrice, 
                             maxPrice: maxPrice, 
                             minPieceAmount: minPieceAmount, 
-                            maxPieceAmount: maxPieceAmount
+                            maxPieceAmount: maxPieceAmount,
+                            username: username
                         )
                     }",
                 conn
@@ -243,7 +245,8 @@ public class AdvertService
                 minPrice: minPrice, 
                 maxPrice: maxPrice, 
                 minPieceAmount: minPieceAmount, 
-                maxPieceAmount: maxPieceAmount
+                maxPieceAmount: maxPieceAmount,
+                username: username
             );
             var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -278,10 +281,11 @@ public class AdvertService
         double? minPrice = null, 
         double? maxPrice = null,
         int? minPieceAmount = null, 
-        int? maxPieceAmount = null
+        int? maxPieceAmount = null,
+        string? username = null
     )
     {
-        var limits = await GetAdvertLimits(isSold, searchTerm, minPrice, maxPrice, minPieceAmount, maxPieceAmount);
+        var limits = await GetAdvertLimits(isSold, searchTerm, minPrice, maxPrice, minPieceAmount, maxPieceAmount, username);
         return limits[0];
     }
 
