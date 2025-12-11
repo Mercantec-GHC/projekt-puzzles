@@ -224,6 +224,7 @@ public class AdvertService
                     MAX(a.""PieceAmount"") as MaxPieceAmount
                 FROM 
                     ""Advert"" a
+                    LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
                 WHERE 
                     {
                         GetWhereClause(

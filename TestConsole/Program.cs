@@ -8,6 +8,8 @@
             var advertService = new AdvertService();
             var userService = new UserService();
 
+            Console.WriteLine($"Get count for user1: {advertService.GetAdvertCountAsync(username: "user1").Result}");
+
             var adverts = advertService.GetAllAdvertsAsync(searchTerm: "Alco", limit: 4).Result;
 
             foreach (var advert in adverts)
