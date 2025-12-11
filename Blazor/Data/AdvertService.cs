@@ -118,6 +118,14 @@ public class AdvertService
     {
         List<List<string>> orderings = new List<List<string>>();
 
+        if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderDirection))
+        {
+            orderings.Add(new List<string>
+            {
+                orderBy,
+                orderDirection
+            });
+        }
         orderings.Add(new List<string>
         {
             "IsSold",
@@ -128,14 +136,6 @@ public class AdvertService
             "CreatedAt",
             "DESC"
         });
-        if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderDirection))
-        {
-            orderings.Add(new List<string>
-            {
-                orderBy,
-                orderDirection
-            });
-        }
 
         return orderings;
 
