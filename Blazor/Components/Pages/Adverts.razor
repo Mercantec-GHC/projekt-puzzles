@@ -1,6 +1,7 @@
 ﻿@page "/adverts/{pageIndex:int}"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
+@using Blazor.Models
 @inject AdvertService ad
 
 
@@ -39,22 +40,29 @@
     const int adsPerPage = 40;
     int pageOffset;
     int advertCount;
-    string searchText;
 
     bool isNextPage = true;
 
 
     //string debug;
 
-
+    SearchParam search = new();
 
     List<Advert> adverts;
 
 
-    private async Task OnSearch(string searchParam)
+    private async Task OnSearch(SearchParam searchParam)
     {
-        searchText = searchParam;
-        advertCount = await ad.GetAdvertCountAsync(searchTerm: searchText);
+        search = searchParam;
+
+        if (search.FilterRange == filterRangeType.Price)
+        {
+            advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax);
+        }
+        // else
+        // {
+        //     advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax);
+        // }
 
         await LoadAdverts();
 
@@ -70,7 +78,7 @@
     {
         pageOffset = adsPerPage * (pageIndex - 1);
 
-        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: searchText);
+        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText);
 
         if ((pageOffset + adsPerPage) > advertCount)
         {

@@ -1,5 +1,6 @@
 ﻿@rendermode InteractiveServer
 @inject AdvertService ad
+@using Blazor.Models
 
 <div>
     <EditForm Model="@search" OnValidSubmit="@Search" FormName="SearchField">
@@ -71,7 +72,7 @@
 
 @code {
     [Parameter]
-    public EventCallback<string> OnSearch { get; set; }
+    public EventCallback<SearchParam> OnSearch { get; set; }
 
     SearchParam search = new();
     List<Advert> adverts;
@@ -83,7 +84,9 @@
     {
         adverts = await ad.GetAllAdvertsAsync(limit:5, searchTerm:search.SearchText);
 
-        await OnSearch.InvokeAsync(search.SearchText);
+        if (search.RangeMax == 0) search.RangeMax = null;
+
+        await OnSearch.InvokeAsync(search);
     }
 
     private async Task UpdateSuggetions(ChangeEventArgs e)
@@ -97,13 +100,5 @@
     }
 
 
-    private class SearchParam
-    {
-        public string SearchText { get; set; }
-        public string OrderBy = "CreatedAt";
-        public string InOrder = "desc";
-        public string FilterRange = "Pieces";
-        public int RangeMin { get; set; }
-        public int RangeMax { get; set; }
-    }
+    
 }
