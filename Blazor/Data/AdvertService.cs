@@ -338,10 +338,10 @@ public class AdvertService
                     a.""PuzzleDimHeight"", 
                     a.""PuzzleDimWidth"", 
                     a.""Picture"", 
-                    u.""UserId"",
-                    u.""Username"", 
-                    u.""Email"", 
-                    u.""PhoneNumber"", 
+                    u.""UserId"", -- FROM USER OBJECT
+                    u.""Username"", -- FROM USER OBJECT
+                    u.""Email"", -- FROM USER OBJECT
+                    u.""PhoneNumber"", -- FROM USER OBJECT
                     a.""CreatedAt"", 
                     a.""IsSold"" 
                 FROM 
