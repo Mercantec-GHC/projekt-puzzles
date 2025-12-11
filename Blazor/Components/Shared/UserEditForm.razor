@@ -1,0 +1,122 @@
+﻿@rendermode InteractiveServer
+@inject UserService userService
+@inject AppState state
+
+@if (loggedIn)
+{
+    <section>
+        <div>
+            <h2>Edit account</h2>
+
+            <h3>@message</h3>
+
+                <EditForm Model="@user" OnValidSubmit="@EditPassword" FormName="EditUserForm">
+                <label>
+                    Original Password
+                        <InputText @bind-Value="originalPassword" type="password" required />
+                </label>
+                <label>
+                    New Password
+                    <InputText @bind-Value="user.Password" type="password" required />
+                </label>
+                <label>
+                    Confirm password
+                    <InputText @bind-Value="passwordCopy" type="password" required />
+                </label>
+                <button type="submit">Change password</button>
+            </EditForm>
+
+                <EditForm Model="@user" OnValidSubmit="@EditEmail" FormName="EditUserForm">
+                <label>
+                    Email
+                    <InputText @bind-Value="user.Email" type="email" required />
+                </label>
+                <button type="submit">Change Email</button>
+            </EditForm>
+
+                <EditForm Model="@user" OnValidSubmit="@EditPhoneNumber" FormName="EditUserForm">
+                <label>
+                    Phone number
+                    <InputText @bind-Value="user.PhoneNumber" type="tel" />
+                </label>
+                <br />
+                <button type="submit">Change phone number</button>
+            </EditForm>
+        </div>
+    </section>
+}
+
+
+
+@code {
+    [Parameter]
+    public string username { get; set; }
+
+    User user = new();
+    string passwordCopy = "";
+    string originalPassword = "";
+
+
+    string message = "";
+    bool loggedIn = false;
+
+    private User ChangedUserTemplate()
+    {
+        User newUser = new();
+        newUser.UserId = user.UserId;
+        newUser.Username = user.Username;
+
+        return newUser;
+    }
+
+    private async Task EditPassword()
+    {
+        User newUser = ChangedUserTemplate();
+
+        if (user.Password == passwordCopy)
+        {
+            newUser.Password = user.Password;
+
+            await userService.UpdateUserAsync(newUser, originalPassword);
+
+            originalPassword = "";
+            message = "Your password has been updated";
+        }
+        else
+        {
+            message = "The passwords does not match";
+        }
+    }
+
+    private async Task EditEmail()
+    {
+        User newUser = ChangedUserTemplate();
+        newUser.Email = user.Email;
+
+        await userService.UpdateUserAsync(newUser);
+
+        message = "Your Email has been changed";
+    }
+
+    private async Task EditPhoneNumber()
+    {
+        User newUser = ChangedUserTemplate();
+        newUser.PhoneNumber = user.PhoneNumber;
+
+        await userService.UpdateUserAsync(newUser);
+
+        message = "Your phone number has been changed";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (state.CurrentUser != null)
+        {
+            if (state.CurrentUser.Username == username)
+            {
+                user = state.CurrentUser;
+                loggedIn = true;
+            }
+        }
+    }
+}

@@ -5,20 +5,22 @@
 
 <PageTitle>User details</PageTitle>
 
+<UserEditForm username="@username"/>
+
 <section>
     <div>
         <h1>Your advertisements</h1>
     </div>
 </section>
 
-<section>
+<section id="adverts">
     <AdvertContainer Adverts="adverts" />
 </section>
 
 <section>
     <PaginationBar pageIndex="pageIndex"
-        NextPageUrl="@($"/user/{username}/{pageIndex + 1}")"
-        PreviousPageUrl="@($"/user/{username}/{pageIndex - 1}")"
+        NextPageUrl="@($"/user/{username}/{pageIndex + 1}#adverts")"
+                   PreviousPageUrl="@($"/user/{username}/{pageIndex - 1}#adverts")"
         isNextPageAvailable="isNextPage" />
 </section>
 

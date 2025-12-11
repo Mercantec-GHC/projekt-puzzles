@@ -1,7 +1,7 @@
 ﻿@using System.Threading.Tasks
 @inject AppState state
 @inject AdvertService ad
-@inject NavigationManager NavigationManager
+@inject NavigationManager nav
 
 <div class="single-advert">
     <h1>@advert.Title</h1>
@@ -83,7 +83,7 @@
     {
         await ad.DeleteAdvertAsync(advert.AdvertId);
 
-        NavigationManager.NavigateTo($"/user/{advert.User.Username}/1");
+        nav.NavigateTo($"/user/{advert.User.Username}/1");
     }
 
     private async Task ToggleSold()
