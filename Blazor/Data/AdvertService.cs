@@ -114,6 +114,33 @@ public class AdvertService
         }
     }
 
+    private List<List<string>> GetOrderByClause(string? orderBy = null, string? orderDirection = null)
+    {
+        List<List<string>> orderings = new List<List<string>>();
+
+        orderings.Add(new List<string>
+        {
+            "IsSold",
+            "ASC"
+        });
+        orderings.Add(new List<string>
+        {
+            "CreatedAt",
+            "DESC"
+        });
+        if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderDirection))
+        {
+            orderings.Add(new List<string>
+            {
+                orderBy,
+                orderDirection
+            });
+        }
+
+        return orderings;
+
+    }
+
     public async Task AddAdvertAsync(Advert advert)
     {
         try
@@ -268,7 +295,9 @@ public class AdvertService
         double? minPrice = null, 
         double? maxPrice = null,
         int? minPieceAmount = null, 
-        int? maxPieceAmount = null
+        int? maxPieceAmount = null,
+        string? orderBy = null,
+        string? orderDirection = null
     )
     {
         var adverts = new List<Advert>();
@@ -282,6 +311,9 @@ public class AdvertService
             minPieceAmount: minPieceAmount, 
             maxPieceAmount: maxPieceAmount
         );
+
+        var orderings = GetOrderByClause(orderBy, orderDirection);
+        string orderByString = string.Join(", ", orderings.Select(o => $@"a.""{o[0]}"" {o[1]}"));
 
         try
         {
@@ -313,8 +345,7 @@ public class AdvertService
                 WHERE 
                     {whereString}
                 ORDER BY 
-                    a.""IsSold"" ASC,
-                    a.""CreatedAt"" DESC
+                    {orderByString}
                 OFFSET 
                     @offset 
                 LIMIT 
