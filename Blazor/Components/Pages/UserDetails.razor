@@ -1,4 +1,4 @@
-@page "/user/{username}"
+@page "/user/{username}/{pageIndex:int}"
 @rendermode InteractiveServer
 @using Blazor.Components.Shared
 @inject AdvertService ad
@@ -15,15 +15,47 @@
     <AdvertContainer Adverts="adverts" />
 </section>
 
+<section>
+    <PaginationBar pageIndex="pageIndex"
+        NextPageUrl="@($"/user/{username}/{pageIndex + 1}")"
+        PreviousPageUrl="@($"/user/{username}/{pageIndex - 1}")"
+        isNextPageAvailable="isNextPage" />
+</section>
+
 @code {
     [Parameter]
     public string username { get; set; }
 
+    [Parameter]
+    public int pageIndex { get; set; }
+
+    const int adsPerPage = 8;
+    int pageOffset;
+    int advertCount;
+
+    bool isNextPage = true;
+
     List<Advert> adverts;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        pageOffset = adsPerPage * (pageIndex - 1);
+
+        if ((pageOffset + adsPerPage) >= advertCount)
+        {
+            isNextPage = false;
+        }
+        else
+        {
+            isNextPage = true;
+        }
+
+        adverts = await ad.GetAdvertsByUserAsync(username: username, limit: adsPerPage, offset: pageOffset);
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        adverts = await ad.GetAdvertsByUserAsync(username);
+        advertCount = await ad.GetAdvertCountAsync(username: username, isSold: null);
     }
 }
 

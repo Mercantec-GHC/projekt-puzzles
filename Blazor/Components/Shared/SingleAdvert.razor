@@ -12,7 +12,7 @@
 
             <p>
                 by 
-                <a href="/user/@advert.User.Username" class="gold">@advert.User.Username</a>
+                <a href="/user/@advert.User.Username/1" class="gold">@advert.User.Username</a>
             </p>
             <p>&#9993; @advert.User.Email</p>
             <p>&#9742; @advert.User.PhoneNumber</p>
@@ -83,7 +83,7 @@
     {
         await ad.DeleteAdvertAsync(advert.AdvertId);
 
-        NavigationManager.NavigateTo($"/user/{advert.User.Username}");
+        NavigationManager.NavigateTo($"/user/{advert.User.Username}/1");
     }
 
     private async Task ToggleSold()

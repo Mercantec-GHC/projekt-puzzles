@@ -59,10 +59,10 @@
         {
             advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax);
         }
-        // else
-        // {
-        //     advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax);
-        // }
+        else
+        {
+            advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPieceAmount: search.RangeMin, maxPieceAmount: search.RangeMax);
+        }
 
         await LoadAdverts();
 
@@ -78,9 +78,16 @@
     {
         pageOffset = adsPerPage * (pageIndex - 1);
 
-        adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText);
+        if (search.FilterRange == filterRangeType.Price)
+        {
+            adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax, orderBy: Enum.GetName(search.OrderBy), orderDirection: Enum.GetName(search.InOrder));
+        }
+        else
+        {
+            adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText, minPieceAmount: search.RangeMin, maxPieceAmount: search.RangeMax, orderBy: Enum.GetName(search.OrderBy), orderDirection: Enum.GetName(search.InOrder));
+        }
 
-        if ((pageOffset + adsPerPage) > advertCount)
+        if ((pageOffset + adsPerPage) >= advertCount)
         {
             isNextPage = false;
         }
