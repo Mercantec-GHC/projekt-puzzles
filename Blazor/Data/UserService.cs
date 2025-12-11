@@ -97,11 +97,15 @@ public class UserService
         return null;
     }
 
-    public async Task UpdateUserAsync(User user)
+    public async Task UpdateUserAsync(User user, string? password = null)
     {
         List<string> updateFields = new List<string>();
-        if (user.Password != null)
+        if (user.Password != null && password != null)
         {
+            if (await LoginUserAsync(user.Username, password) == null)
+            {
+                throw new UnauthorizedAccessException("Current password is incorrect.");
+            }
             updateFields.Add($@"""PassHash"" = @passhash");
         }
         if (user.Email != null)
