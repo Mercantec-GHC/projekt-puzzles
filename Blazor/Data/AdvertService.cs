@@ -5,10 +5,13 @@ public class AdvertService
     private readonly string _connectionString;
 	public AdvertService()
     {
+        // fetches the connection string from its class
         _connectionString = ConnectionString.DefaultConnection;
     }
 
+    // returns a string that specifies what should be exstracted in the database
     private string GetWhereClause(
+        // has default values
         bool? isSold = false, 
         string? searchTerm = null, 
         string? username = null, 
@@ -24,14 +27,17 @@ public class AdvertService
 
         string whereString = "";
 
+        // checks all the parameters if they are not null then inserts the parameter
         if (isSold.HasValue)
         {
             conditions.Add($@"a.""IsSold"" = @isSold");
         }
 
+        // compares searchTerm with adverts title and description
         if (!string.IsNullOrEmpty(searchTerm))
         {
             OrConditions.Add(new List<string>
+            // % means text can continue in that direction and || is works like + string
             {
                 $@"a.""Title"" ILIKE '%' || @searchTerm || '%'",
                 $@"a.""Description"" ILIKE '%' || @searchTerm || '%'"
@@ -47,6 +53,7 @@ public class AdvertService
         }
         if (minPrice.HasValue)
         {
+            // >= and <= is used to return a range
             conditions.Add($@"a.""Price"" >= @minPrice");
         }
         if (maxPrice.HasValue)
@@ -61,12 +68,14 @@ public class AdvertService
         {
             conditions.Add($@"a.""PieceAmount"" <= @maxPieceAmount");
         }
-        
+
+        // adds the OrConditions to conditions in the SQL format and then adds it to the wherestring sepperated by " AND "
         conditions.AddRange(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
         whereString = string.Join(" AND ", conditions);
         return whereString;
     }
 
+    // replaces the parameters in the WHERE string
     private void AddWhereParameters(NpgsqlCommand cmd, 
         bool? isSold = false, 
         string? searchTerm = null, 
@@ -78,6 +87,7 @@ public class AdvertService
         int? maxPieceAmount = null
     )
     {
+        // replaces the parameters in the cmd if they are not null
         if (isSold.HasValue)
         {
             cmd.Parameters.AddWithValue("isSold", isSold.Value);
@@ -114,6 +124,7 @@ public class AdvertService
         }
     }
 
+    // return a list of lists that determine the order of the adverts
     private List<List<string>> GetOrderByClause(string? orderBy = null, string? orderDirection = null)
     {
         List<List<string>> orderings = new List<List<string>>();
@@ -141,6 +152,7 @@ public class AdvertService
 
     }
 
+    // adds a new advert to the table in the database
     public async Task AddAdvertAsync(Advert advert)
     {
         try
@@ -202,6 +214,7 @@ public class AdvertService
         }
     }
 
+    // returns the size of the exstracted table, the highest price and piece amount in the table
     public async Task<dynamic[]> GetAdvertLimits(
         bool? isSold = false, 
         string? searchTerm = null, 
@@ -227,6 +240,7 @@ public class AdvertService
                     LEFT JOIN ""UserAccounts"" u ON a.""UserId"" = u.""UserId""
                 WHERE 
                     {
+                    // returns WHERE criteria
                         GetWhereClause(
                             isSold: isSold, 
                             searchTerm: searchTerm, 
@@ -239,7 +253,7 @@ public class AdvertService
                     }",
                 conn
             );
-
+            // replaces the parameters in the WHERE string
             AddWhereParameters(cmd, 
                 isSold: isSold, 
                 searchTerm: searchTerm, 
@@ -249,12 +263,15 @@ public class AdvertService
                 maxPieceAmount: maxPieceAmount,
                 username: username
             );
+            // reads the output of the command
             var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
+                // gets the size of the exstracted table, the highest price and piece amount in the table
                 int count = reader.GetInt32(0);
                 double maxPriceResult = reader.IsDBNull(1) ? 0 : reader.GetDouble(1);
                 int maxPieceAmountResult = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
+                // a dynamic array can hold different data types
                 return new dynamic[] { count, maxPriceResult, maxPieceAmountResult };
             }
         } catch (Exception ex)
@@ -290,6 +307,7 @@ public class AdvertService
         return limits[0];
     }
 
+
     public async Task<List<Advert>> GetAllAdvertsAsync(
         int offset = 0, 
         int limit = 100, 
@@ -306,6 +324,8 @@ public class AdvertService
     )
     {
         var adverts = new List<Advert>();
+
+        // creates WHERE string
         string whereString = GetWhereClause(
             isSold: isSold, 
             searchTerm: searchTerm, 
@@ -317,7 +337,10 @@ public class AdvertService
             maxPieceAmount: maxPieceAmount
         );
 
+        // gets a list of lists that determine the order of the adverts
         var orderings = GetOrderByClause(orderBy, orderDirection);
+
+        // turns all the lists into a string of orders
         string orderByString = string.Join(", ", orderings.Select(o => $@"a.""{o[0]}"" {o[1]}"));
 
         try
@@ -374,6 +397,7 @@ public class AdvertService
 
             using var reader = await cmd.ExecuteReaderAsync();
 
+            // read the output from the database and add it to the list
             while (await reader.ReadAsync())
             {
                 adverts.Add(new Advert

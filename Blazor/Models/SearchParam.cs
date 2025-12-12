@@ -4,6 +4,8 @@
     public enum orderByType { PieceAmount, Price, CreatedAt }
 
     public enum inOrderType { ASC, DESC }
+
+    // class used for the search parameters
     public class SearchParam
     {
         public string SearchText { get; set; } = null;
