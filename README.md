@@ -4,7 +4,7 @@
 
 Dette er et blazor Projekt samt en postgress database
 
-## Embedded Video og designfil 
+## Embedded Video og ~~designfil~~ 
 
 
 
