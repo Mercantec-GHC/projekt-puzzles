@@ -97,6 +97,18 @@ public class UserService
         return null;
     }
 
+    /// <summary>
+    /// Asynchronously updates the specified user's information in the database. 
+    /// Optionally verifies the current password before updating the password hash.
+    /// </summary>
+    /// <param name="user">The <see cref="User"/> object containing updated user information.</param>
+    /// <param name="password">
+    /// The current password of the user, required if the password is being updated. 
+    /// If provided, the method verifies the password before updating the password hash.
+    /// </param>
+    /// <exception cref="UnauthorizedAccessException">
+    /// Thrown if the provided current password is incorrect when attempting to update the password.
+    /// </exception>
     public async Task UpdateUserAsync(User user, string? password = null)
     {
         List<string> updateFields = new List<string>();
