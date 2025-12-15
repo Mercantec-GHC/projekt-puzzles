@@ -8,7 +8,7 @@
     <p>
         <span>@advert.PieceAmount P</span>
 
-        // Show a warning if the advert is sold, otherwise display the price
+        @* Show a warning if the advert is sold, otherwise display the price *@
         @if (advert.IsSold)
         {
             <span class="warning">Sold</span>
