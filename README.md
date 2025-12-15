@@ -2,7 +2,9 @@
 
 ## Pitch - Hvad har i lavet og hvilke teknologier har i brugt (blazor + den database i bruger) - Maks 150 ord
 
-Dette er et blazor Projekt samt en postgress database
+Dette er et blazor Projekt samt en postgress database.
+Vi har lavet en markedsplads, hvor man kan købe og sælge brugte puslespil. Vi har har lavet vores styling med css fra bunden, så den skulle ligne et billiard bord. 
+I vores project kan man oprette brugere og annoncer, som kan redigeres af deres ejer.
 
 ## Embedded Video og ~~designfil~~ 
 
