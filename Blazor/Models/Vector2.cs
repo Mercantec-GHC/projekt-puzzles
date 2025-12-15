@@ -1,3 +1,7 @@
+/// <summary>
+/// Represents a two-dimensional vector with multiple property aliases for its components,
+/// such as X/Y, Width/Height, and Latitude/Longitude.
+/// </summary>
 public class Vector2
 {
     public double _X;

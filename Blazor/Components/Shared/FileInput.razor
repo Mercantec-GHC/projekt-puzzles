@@ -17,24 +17,45 @@
 
 
 @code {
+
+    /// <summary>
+    /// Event callback triggered when a file is selected by the user.
+    /// </summary>
     [Parameter]
     public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
 
+    /// <summary>
+    /// Event callback triggered when the file input is cleared.
+    /// </summary>
     [Parameter]
     public EventCallback<InputFileChangeEventArgs> OnClear { get; set; }
 
+    /// <summary>
+    /// Indicates whether selecting a file is required.
+    /// </summary>
     [Parameter]
     public bool required { get; set; } = false;
 
+    /// <summary>
+    /// Handles the file selection event, updates the fileName, and invokes the OnChange callback.
+    /// </summary>
+    /// <param name="e">The file change event arguments.</param>
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
+        // Store the selected file's name for display and binding
         fileName = e.File.Name;
+        // Notify parent component or handler of the file change
         await OnChange.InvokeAsync(e);
     }
 
+    /// <summary>
+    /// Clears the selected file and invokes the OnClear callback.
+    /// </summary>
     private void ClearFile()
     {
+        // Remove the file name from the input
         fileName = null;
+        // Notify parent component or handler that the file was cleared
         OnClear.InvokeAsync();
     }
 

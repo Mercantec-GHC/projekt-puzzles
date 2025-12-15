@@ -1,15 +1,37 @@
 ﻿using Npgsql;
 
+/// <summary>
+/// Provides operations for managing adverts, including creation, retrieval, updating, and deletion.
+/// Handles SQL query construction and parameterization for flexible advert filtering and sorting.
+/// </summary>
 public class AdvertService
 {
+    /// <summary>
+    /// The connection string used to connect to the database.
+    /// </summary>
     private readonly string _connectionString;
-	public AdvertService()
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AdvertService"/> class using the default connection string.
+    /// </summary>
+    public AdvertService()
     {
-        // fetches the connection string from its class
+        // Fetches the connection string from its class
         _connectionString = ConnectionString.DefaultConnection;
     }
 
-    // returns a string that specifies what should be exstracted in the database
+    /// <summary>
+    /// Constructs a SQL WHERE clause string based on provided filter parameters.
+    /// </summary>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <param name="username">Filter by username.</param>
+    /// <param name="advertId">Filter by advert ID.</param>
+    /// <param name="minPrice">Minimum price filter.</param>
+    /// <param name="maxPrice">Maximum price filter.</param>
+    /// <param name="minPieceAmount">Minimum piece amount filter.</param>
+    /// <param name="maxPieceAmount">Maximum piece amount filter.</param>
+    /// <returns>A SQL WHERE clause string.</returns>
     private string GetWhereClause(
         // has default values
         bool? isSold = false, 
@@ -27,13 +49,13 @@ public class AdvertService
 
         string whereString = "";
 
-        // checks all the parameters if they are not null then inserts the parameter
+        // Add conditions for each filter parameter if provided
         if (isSold.HasValue)
         {
             conditions.Add($@"a.""IsSold"" = @isSold");
         }
 
-        // compares searchTerm with adverts title and description
+        // Add OR conditions for search term in title or description
         if (!string.IsNullOrEmpty(searchTerm))
         {
             OrConditions.Add(new List<string>
@@ -69,13 +91,15 @@ public class AdvertService
             conditions.Add($@"a.""PieceAmount"" <= @maxPieceAmount");
         }
 
-        // adds the OrConditions to conditions in the SQL format and then adds it to the wherestring sepperated by " AND "
+        // Adds the OrConditions to conditions in the SQL format and then adds it to the wherestring sepperated by " AND "
         conditions.AddRange(OrConditions.Select(orGroup => "(" + string.Join(" OR ", orGroup) + ")"));
         whereString = string.Join(" AND ", conditions);
         return whereString;
     }
 
-    // replaces the parameters in the WHERE string
+    /// <summary>
+    /// Adds parameters to a <see cref="NpgsqlCommand"/> based on provided filter values.
+    /// </summary>
     private void AddWhereParameters(NpgsqlCommand cmd, 
         bool? isSold = false, 
         string? searchTerm = null, 
@@ -87,7 +111,7 @@ public class AdvertService
         int? maxPieceAmount = null
     )
     {
-        // replaces the parameters in the cmd if they are not null
+        // Sets the parameters in the cmd if they are not null
         if (isSold.HasValue)
         {
             cmd.Parameters.AddWithValue("isSold", isSold.Value);
@@ -124,11 +148,17 @@ public class AdvertService
         }
     }
 
-    // return a list of lists that determine the order of the adverts
+    /// <summary>
+    /// Constructs a list of orderings for the SQL ORDER BY clause.
+    /// </summary>
+    /// <param name="orderBy">The field to order by.</param>
+    /// <param name="orderDirection">The direction to order (ASC/DESC).</param>
+    /// <returns>A list of orderings for the ORDER BY clause.</returns>
     private List<List<string>> GetOrderByClause(string? orderBy = null, string? orderDirection = null)
     {
         List<List<string>> orderings = new List<List<string>>();
 
+        // Add custom ordering if provided
         if (!string.IsNullOrEmpty(orderBy) && !string.IsNullOrEmpty(orderDirection))
         {
             orderings.Add(new List<string>
@@ -137,6 +167,7 @@ public class AdvertService
                 orderDirection
             });
         }
+        // Default ordering: first by IsSold ascending, then by CreatedAt descending
         orderings.Add(new List<string>
         {
             "IsSold",
@@ -152,14 +183,19 @@ public class AdvertService
 
     }
 
-    // adds a new advert to the table in the database
+    /// <summary>
+    /// Asynchronously adds a new advert to the database.
+    /// </summary>
+    /// <param name="advert">The <see cref="Advert"/> object to add.</param>
     public async Task AddAdvertAsync(Advert advert)
     {
         try
         {
+            // Open a new database connection
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
+            // Prepare the SQL command for inserting a new advert
             using var cmd = new NpgsqlCommand(
                 @"INSERT INTO 
                     ""Advert"" (
@@ -194,6 +230,7 @@ public class AdvertService
                 conn
             );
 
+            // Add parameters for the advert fields
             cmd.Parameters.AddWithValue("title", advert.Title);
             cmd.Parameters.AddWithValue("description", advert.Description);
             cmd.Parameters.AddWithValue("price", advert.Price);
@@ -210,11 +247,22 @@ public class AdvertService
             await cmd.ExecuteNonQueryAsync();
         } catch (Exception ex)
         {
+            // Log the error if advert creation fails
             Console.WriteLine($"Error adding advert: {ex.Message}");
         }
     }
 
-    // returns the size of the exstracted table, the highest price and piece amount in the table
+    /// <summary>
+    /// Asynchronously retrieves the count, maximum price, and maximum piece amount for adverts matching the given filters.
+    /// </summary>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <param name="minPrice">Minimum price filter.</param>
+    /// <param name="maxPrice">Maximum price filter.</param>
+    /// <param name="minPieceAmount">Minimum piece amount filter.</param>
+    /// <param name="maxPieceAmount">Maximum piece amount filter.</param>
+    /// <param name="username">Filter by username.</param>
+    /// <returns>An array containing: [count, max price, max piece amount].</returns>
     public async Task<dynamic[]> GetAdvertLimits(
         bool? isSold = false, 
         string? searchTerm = null, 
@@ -281,18 +329,44 @@ public class AdvertService
         return new dynamic[] { 0, 0, 0 };
     }
 
+
+    /// <summary>
+    /// Asynchronously retrieves the maximum advert price for adverts matching the given filters.
+    /// </summary>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <returns>The maximum price found, or 0 if none.</returns>
     public async Task<double> GetMaxAdvertPriceAsync(bool? isSold = false, string? searchTerm = null)
     {
         var limits = await GetAdvertLimits(isSold, searchTerm);
         return limits[1];
     }
 
+
+    /// <summary>
+    /// Asynchronously retrieves the maximum piece amount for adverts matching the given filters.
+    /// </summary>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <returns>The maximum piece amount found, or 0 if none.</returns>
     public async Task<int> GetMaxAdvertPieceAmountAsync(bool? isSold = false, string? searchTerm = null)
     {
         var limits = await GetAdvertLimits(isSold, searchTerm);
         return limits[2];
     }
 
+
+    /// <summary>
+    /// Asynchronously retrieves the count of adverts matching the given filters.
+    /// </summary>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <param name="minPrice">Minimum price filter.</param>
+    /// <param name="maxPrice">Maximum price filter.</param>
+    /// <param name="minPieceAmount">Minimum piece amount filter.</param>
+    /// <param name="maxPieceAmount">Maximum piece amount filter.</param>
+    /// <param name="username">Filter by username.</param>
+    /// <returns>The count of adverts found.</returns>
     public async Task<int> GetAdvertCountAsync(
         bool? isSold = false, 
         string? searchTerm = null, 
@@ -308,6 +382,22 @@ public class AdvertService
     }
 
 
+    /// <summary>
+    /// Asynchronously retrieves a list of adverts matching the given filters, with pagination and ordering.
+    /// </summary>
+    /// <param name="offset">The number of records to skip (for pagination).</param>
+    /// <param name="limit">The maximum number of records to return.</param>
+    /// <param name="isSold">Filter by sold status.</param>
+    /// <param name="searchTerm">Filter by search term in title or description.</param>
+    /// <param name="username">Filter by username.</param>
+    /// <param name="advertId">Filter by advert ID.</param>
+    /// <param name="minPrice">Minimum price filter.</param>
+    /// <param name="maxPrice">Maximum price filter.</param>
+    /// <param name="minPieceAmount">Minimum piece amount filter.</param>
+    /// <param name="maxPieceAmount">Maximum piece amount filter.</param>
+    /// <param name="orderBy">Field to order by.</param>
+    /// <param name="orderDirection">Order direction (ASC/DESC).</param>
+    /// <returns>A list of adverts matching the filters.</returns>
     public async Task<List<Advert>> GetAllAdvertsAsync(
         int offset = 0, 
         int limit = 100, 
@@ -435,17 +525,37 @@ public class AdvertService
         }
     }
 
+
+    /// <summary>
+    /// Asynchronously retrieves a single advert by its ID.
+    /// </summary>
+    /// <param name="advertId">The ID of the advert to retrieve.</param>
+    /// <returns>The <see cref="Advert"/> if found; otherwise, null.</returns>
     public async Task<Advert> GetAdvertByIdAsync(int advertId)
     {
         var adverts = await GetAllAdvertsAsync(advertId: advertId);
         return adverts.FirstOrDefault();
     }
 
+
+    /// <summary>
+    /// Asynchronously retrieves all adverts created by a specific user, with pagination.
+    /// </summary>
+    /// <param name="username">The username to filter adverts by.</param>
+    /// <param name="offset">The number of records to skip (for pagination).</param>
+    /// <param name="limit">The maximum number of records to return.</param>
+    /// <returns>A list of adverts created by the specified user.</returns>
     public async Task<List<Advert>> GetAdvertsByUserAsync(string username, int offset = 0, int limit = 100)
     {
         return await GetAllAdvertsAsync(offset: offset, limit: limit, username: username, isSold: null);
     }
 
+
+    /// <summary>
+    /// Asynchronously updates an existing advert in the database.
+    /// </summary>
+    /// <param name="advert">The <see cref="Advert"/> object with updated values.</param>
+    /// <returns>The updated <see cref="Advert"/> if successful; otherwise, null.</returns>
     public async Task<Advert> UpdateAdvertAsync(Advert advert)
     {
         try
@@ -453,7 +563,7 @@ public class AdvertService
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
-            //updates the advert by id when edited
+            // Prepare the SQL command to update the advert by ID
             using var cmd = new NpgsqlCommand(
                 @"UPDATE 
                     ""Advert"" 
@@ -474,6 +584,7 @@ public class AdvertService
                 conn
             );
 
+            // Add parameters for the updated advert fields
             cmd.Parameters.AddWithValue("advertId", advert.AdvertId);
             cmd.Parameters.AddWithValue("title", advert.Title);
             cmd.Parameters.AddWithValue("description", advert.Description);
@@ -497,6 +608,11 @@ public class AdvertService
     }
 
 
+
+    /// <summary>
+    /// Asynchronously deletes an advert from the database by its ID.
+    /// </summary>
+    /// <param name="advertId">The ID of the advert to delete.</param>
     public async Task DeleteAdvertAsync(int advertId)
     {
         try

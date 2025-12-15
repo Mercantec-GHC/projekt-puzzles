@@ -16,10 +16,13 @@
 
 <section>
     <div>
+        @* EditForm for editing an advert. Submits changes via UpdateAdvert. *@
         <EditForm Model="@advert" OnValidSubmit="@UpdateAdvert" FormName="AdvertForm">
 
+            @* FileInput allows the user to upload or clear an image for the advert *@
             <FileInput OnChange="@OnFileChange" OnClear="ClearFile" Label="Image" />
 
+            @* Show a preview of the uploaded image if one exists *@
             @if (advert.Picture != null)
             {
                 <div>
@@ -98,42 +101,57 @@
     string soldButtonText = "Mark as sold";
 
 
-
-    
-
+    /// <summary>
+    /// Handles the file input change event, reads the file, and stores it as a byte array in the advert.
+    /// </summary>
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         IBrowserFile file = e.File;
         if (file != null)
         {
+            // Read the file into a memory stream (max 5 MB)
             using MemoryStream ms = new MemoryStream();
             await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
-
             advert.Picture = ms.ToArray();
         }
     }
 
+
+    /// <summary>
+    /// Clears the advert's picture.
+    /// </summary>
     private void ClearFile()
     {
         advert.Picture = null;
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Loads the advert and checks user permissions.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         if (state.CurrentUser == null)
         {
+            // Redirect if not logged in
             nav.NavigateTo($"/advert/{id}");
             return;
         }
 
         advert = await ad.GetAdvertByIdAsync(id);
 
+        // Only allow the owner to edit the advert
         if (state.CurrentUser.UserId != advert.User.UserId)
         {
             nav.NavigateTo($"/advert/{id}");
         }
     }
 
+
+    /// <summary>
+    /// Updates the advert in the database and navigates to the advert details page.
+    /// </summary>
     private async Task UpdateAdvert()
     {
         await ad.UpdateAdvertAsync(advert);

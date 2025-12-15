@@ -18,8 +18,14 @@
 
     Advert advert;
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Loads the advert details for the given ID.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        // Fetch the advert details from the service
         advert = await ad.GetAdvertByIdAsync(id);
     }
 }

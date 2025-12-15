@@ -16,6 +16,7 @@
 <section>
     <div>
         <a href="/adverts/1" class="gold"><h2>Adverts</h2></a>
+        @* Display a list of adverts using the AdvertContainer component *@
         <AdvertContainer Adverts="adverts"/>  
     </div>
 </section>
@@ -25,18 +26,15 @@
 
 
 @code {
-    public Advert advert = new()
-    {
-        Title = "test",
-        Description = "dfhajdhfkahdlfhbalfhbvilsdhff",
-        PieceAmount = 1000
-    };
-
     List<Advert> adverts;
 
-
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Loads the first 12 adverts to display on the front page.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        // Fetch up to 12 adverts for the front page display
         adverts = await ad.GetAllAdvertsAsync(limit: 12);
     }
 }

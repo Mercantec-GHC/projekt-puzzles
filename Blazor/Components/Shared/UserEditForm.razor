@@ -59,23 +59,36 @@
     string message = "";
     bool loggedIn = false;
 
+
+    /// <summary>
+    /// Creates a new User object template with the current user's ID and username.
+    /// Used as a base for updating user information without altering other fields.
+    /// </summary>
+    /// <returns>A new User object with UserId and Username set.</returns>
     private User ChangedUserTemplate()
     {
         User newUser = new();
         newUser.UserId = user.UserId;
         newUser.Username = user.Username;
-
+        // Only copies ID and username; other fields are set in the specific edit methods.
         return newUser;
     }
 
+
+    /// <summary>
+    /// Handles the password change process for the user.
+    /// Checks if the new password and confirmation match, then updates the password via the user service.
+    /// </summary>
     private async Task EditPassword()
     {
         User newUser = ChangedUserTemplate();
 
+        // Ensure the new password and confirmation match
         if (user.Password == passwordCopy)
         {
             newUser.Password = user.Password;
 
+            // Update the user with the new password, passing the original password for verification
             await userService.UpdateUserAsync(newUser, originalPassword);
 
             originalPassword = "";
@@ -87,26 +100,43 @@
         }
     }
 
+
+    /// <summary>
+    /// Handles the email change process for the user.
+    /// Updates the user's email via the user service.
+    /// </summary>
     private async Task EditEmail()
     {
         User newUser = ChangedUserTemplate();
         newUser.Email = user.Email;
 
+        // Update the user with the new email
         await userService.UpdateUserAsync(newUser);
 
         message = "Your Email has been changed";
     }
 
+
+    /// <summary>
+    /// Handles the phone number change process for the user.
+    /// Updates the user's phone number via the user service.
+    /// </summary>
     private async Task EditPhoneNumber()
     {
         User newUser = ChangedUserTemplate();
         newUser.PhoneNumber = user.PhoneNumber;
 
+        // Update the user with the new phone number
         await userService.UpdateUserAsync(newUser);
 
         message = "Your phone number has been changed";
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Sets the user and login state if the current user matches the username parameter.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         if (state.CurrentUser != null)

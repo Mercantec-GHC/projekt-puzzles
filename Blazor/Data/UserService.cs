@@ -2,61 +2,93 @@ using System.Security.Cryptography;
 using System.Text;
 using Npgsql;
 
+/// <summary>
+/// Provides user-related operations such as registration, authentication, and updating user information.
+/// Handles password hashing and database interactions for user accounts.
+/// </summary>
 public class UserService
 {
+    /// <summary>
+    /// The connection string used to connect to the database.
+    /// </summary>
     private readonly string _connectionString;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserService"/> class using the default connection string.
+    /// </summary>
     public UserService()
     {
         _connectionString = ConnectionString.DefaultConnection;
     }
 
+    /// <summary>
+    /// Hashes a password using SHA256 and encodes it as a Base64 string.
+    /// </summary>
+    /// <param name="password">The plain text password to hash.</param>
+    /// <returns>The hashed password as a Base64-encoded string.</returns>
     private string hashPassword(string password)
     {
         // A SHA256 hash is a string with the length of 64 characters in a hexadecimal format
-        // here we create the method to convert any text to this format
+        // Here we create the method to convert any text to this format
         using var sha = SHA256.Create();
 
-        // here we take the password and convert it to a byte array
-        // then instantly run the convertion on the password byte array to a hash byte array
+        // Convert the password to a byte array and compute the hash
         var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-        // then finally we convert our SHA256 converted password to Base64 which takes all bits in the size of 6-bit per character
-        // and turn them into readable characters without losing any data
+        // Convert the hash byte array to a Base64 string for storage
         return Convert.ToBase64String(bytes);
     }
 
+    /// <summary>
+    /// Asynchronously creates a new user in the database.
+    /// </summary>
+    /// <param name="user">The <see cref="User"/> object containing user details to be created.</param>
+    /// <returns>True if the user was created successfully; otherwise, false.</returns>
     public async Task<bool> CreateUserAsync(User user)
     {
         try
         {
+            // Open a new database connection
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
+            // Prepare the SQL command for inserting a new user
             using var cmd = new NpgsqlCommand(
                 "INSERT INTO \"UserAccounts\" (\"Username\", \"PassHash\", \"Email\", \"PhoneNumber\") VALUES (@name, @passhash, @email, @phonenumber)",
                 conn
             );
+            // Hash the user's password before storing
             user.PassHash = hashPassword(user.Password);
             cmd.Parameters.AddWithValue("name", user.Username);
             cmd.Parameters.AddWithValue("passhash", user.PassHash);
             cmd.Parameters.AddWithValue("email", user.Email);
             cmd.Parameters.AddWithValue("phonenumber", user.PhoneNumber);
 
+            // Execute the command asynchronously
             await cmd.ExecuteNonQueryAsync();
             return true;
         }
         catch (Exception ex)
         {
+            // Log the error and return false
             Console.WriteLine($"Error creating user: {ex.Message}");
             return false;
         }
     }
 
+    /// <summary>
+    /// Asynchronously attempts to log in a user by verifying the username and password.
+    /// </summary>
+    /// <param name="username">The username of the user attempting to log in.</param>
+    /// <param name="password">The plain text password to verify.</param>
+    /// <returns>The <see cref="User"/> object if authentication is successful; otherwise, null.</returns>
     public async Task<User> LoginUserAsync(string username, string password)
     {
         try
         {
+            // Open a new database connection
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
+            // Prepare the SQL command to select the user by username
             using var cmd = new NpgsqlCommand(
                 @"SELECT 
                     u.""UserId"", 
@@ -75,10 +107,12 @@ public class UserService
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
+                // Retrieve the stored password hash
                 var hash = reader.GetString(4);
-                
+                // Compare the stored hash with the hash of the provided password
                 if (hash == hashPassword(password))
                 {
+                    // Return the user object if authentication is successful
                     return new User
                     {
                         UserId = reader.GetInt32(0),
@@ -92,8 +126,10 @@ public class UserService
         }
         catch (Exception ex)
         {
+            // Log the error
             Console.WriteLine($"Error logging in user: {ex.Message}");
         }
+        // Return null if authentication fails
         return null;
     }
 
@@ -111,9 +147,11 @@ public class UserService
     /// </exception>
     public async Task UpdateUserAsync(User user, string? password = null)
     {
+        // Build a list of fields to update based on provided user data
         List<string> updateFields = new List<string>();
         if (user.Password != null && password != null)
         {
+            // Verify the current password before allowing password update
             if (await LoginUserAsync(user.Username, password) == null)
             {
                 throw new UnauthorizedAccessException("Current password is incorrect.");
@@ -131,8 +169,10 @@ public class UserService
 
         try
         {
+            // Open a new database connection
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
+            // Prepare the SQL command for updating user fields
             using var cmd = new NpgsqlCommand(
                 $@"UPDATE 
                     ""UserAccounts"" 
@@ -142,6 +182,7 @@ public class UserService
                     ""UserId"" = @userid",
                 conn
             );
+            // Add parameters for fields being updated
             if (user.Password != null)
             {
                 user.PassHash = hashPassword(user.Password);
@@ -157,10 +198,12 @@ public class UserService
             }
             cmd.Parameters.AddWithValue("userid", user.UserId);
 
+            // Execute the update command asynchronously
             await cmd.ExecuteNonQueryAsync();
         }
         catch (Exception ex)
         {
+            // Log the error
             Console.WriteLine($"Error updating user: {ex.Message}");
         }
     }

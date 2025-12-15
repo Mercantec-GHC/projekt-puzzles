@@ -21,15 +21,27 @@
 </div>
 
 @code {
+    /// <summary>
+    /// The current page index (1-based).
+    /// </summary>
     [Parameter]
     public required int pageIndex { get; set; }
 
+    /// <summary>
+    /// The URL to navigate to the next page.
+    /// </summary>
     [Parameter]
     public required string NextPageUrl { get; set; }
 
+    /// <summary>
+    /// The URL to navigate to the previous page.
+    /// </summary>
     [Parameter]
     public required string PreviousPageUrl { get; set; }
 
+    /// <summary>
+    /// Indicates whether a next page is available for navigation.
+    /// </summary>
     [Parameter]
     public bool isNextPageAvailable { get; set; } = false;
 

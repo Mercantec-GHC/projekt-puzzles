@@ -10,10 +10,6 @@
 <section>
     <div>
         <h1>Adverts</h1>
-        @* @if (debug != null)
-        {
-            <p>@debug</p>
-        } *@
     </div>
 </section>
 
@@ -51,10 +47,16 @@
     List<Advert> adverts;
 
 
+
+    /// <summary>
+    /// Handles the search event from the SearchField component.
+    /// Updates the search parameters, gets the advert count, and loads the adverts for the current filter.
+    /// </summary>
     private async Task OnSearch(SearchParam searchParam)
     {
         search = searchParam;
 
+        // Get the total number of adverts matching the current filter
         if (search.FilterRange == filterRangeType.Price)
         {
             advertCount = await ad.GetAdvertCountAsync(searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax);
@@ -69,15 +71,26 @@
         //debug = searchParam;
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when component parameters change (e.g., pageIndex).
+    /// Loads the adverts for the current page and filter.
+    /// </summary>
     protected override async Task OnParametersSetAsync()
     {
         await LoadAdverts();
     }
 
+
+    /// <summary>
+    /// Loads the adverts for the current page and filter.
+    /// Calculates the page offset, fetches adverts, and determines if a next page is available.
+    /// </summary>
     private async Task LoadAdverts()
     {
         pageOffset = adsPerPage * (pageIndex - 1);
 
+        // Fetch adverts based on the selected filter range (price or pieces)
         if (search.FilterRange == filterRangeType.Price)
         {
             adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText, minPrice: search.RangeMin, maxPrice: search.RangeMax, orderBy: Enum.GetName(search.OrderBy), orderDirection: Enum.GetName(search.InOrder));
@@ -87,6 +100,7 @@
             adverts = await ad.GetAllAdvertsAsync(limit: adsPerPage, offset: pageOffset, searchTerm: search.SearchText, minPieceAmount: search.RangeMin, maxPieceAmount: search.RangeMax, orderBy: Enum.GetName(search.OrderBy), orderDirection: Enum.GetName(search.InOrder));
         }
 
+        // Determine if there is a next page
         if ((pageOffset + adsPerPage) >= advertCount)
         {
             isNextPage = false;
@@ -97,6 +111,11 @@
         }
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Loads the total advert count for all adverts.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         advertCount = await ad.GetAdvertCountAsync();

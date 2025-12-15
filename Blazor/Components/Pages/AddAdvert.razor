@@ -23,7 +23,7 @@
             @if (advert.Picture != null)
             {
                 <div>
-                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Picture)" alt="Alt" />
+                    <AdvertImage Picture="advert.Picture"></AdvertImage>
                 </div>
             }
 
@@ -97,19 +97,28 @@
 
 
 
+
+    /// <summary>
+    /// Handles the file input change event, reads the file, and stores it as a byte array in the advert.
+    /// </summary>
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         IBrowserFile file = e.File;
         if (file != null)
         {
+            // Read the file into a memory stream (max 5 MB)
             using MemoryStream ms = new MemoryStream();
             await file.OpenReadStream(1024 * 1024 * 5).CopyToAsync(ms);
-
             advert.Picture = ms.ToArray();
         }
     }
 
-     protected override async Task OnInitializedAsync()
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Redirects to home if the user is not logged in.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
     {
         if (state.CurrentUser == null)
         {
@@ -117,11 +126,20 @@
         }
     }
 
+
+    /// <summary>
+    /// Clears the advert's picture.
+    /// </summary>
     private void ClearFile()
     {
         advert.Picture = null;
     }
 
+
+    /// <summary>
+    /// Handles the form submission for creating a new advert.
+    /// Sets the user and creation date, uploads the advert, and resets the form.
+    /// </summary>
     private async Task NewAdvert()
     {
         advert.User = state.CurrentUser;

@@ -31,17 +31,30 @@
 @code {
 
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Subscribes to state changes to update the navigation menu.
+    /// </summary>
     protected override void OnInitialized()
     {
         state.OnChange += StateHasChanged;
     }
 
+
+    /// <summary>
+    /// Unsubscribes from state changes when the component is disposed.
+    /// </summary>
     public void Dispose()
     {
         state.OnChange -= StateHasChanged;
     }
 
 
+
+    /// <summary>
+    /// Logs out the current user and navigates to the home page.
+    /// </summary>
     void Logout()
     {
         state.logout();

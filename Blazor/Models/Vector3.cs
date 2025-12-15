@@ -1,3 +1,10 @@
+/// <summary>
+/// Represents a three-dimensional vector, extending <see cref="Vector2"/> with a Z component.
+/// Provides multiple aliases for the Z component (Z, Depth, Altitude, B) and for X and Y (R, G).
+/// </summary>
+/// <remarks>
+/// Useful for mathematical operations in 3D space or as a color vector (RGB).
+/// </remarks>
 public class Vector3 : Vector2
 {
 	public double _Z;

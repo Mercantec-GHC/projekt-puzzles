@@ -1,13 +1,19 @@
+@* Display the advert image if available, otherwise show a placeholder *@
 @if (Picture != null)
 {
+    // Render the image from the byte array as a base64-encoded JPEG
     <img src="data:image/jpeg;base64,@Convert.ToBase64String(Picture)" alt="Alt" />
 }
 else
 {
+    // Render a placeholder image if no picture is provided
     <img src="PuzzleBoxPlaceholder.svg" alt="Alt" />
 }
 
 @code {
+    /// <summary>
+    /// The image data to display, as a byte array. If null, a placeholder is shown.
+    /// </summary>
     [Parameter]
     public byte[] Picture { get; set; }
 }

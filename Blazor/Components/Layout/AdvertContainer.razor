@@ -5,6 +5,7 @@
 <div class="advert-boxes">
     @if (Adverts != null)
     {
+        // Render an AdvertCard for each advert in the list
         @foreach (Advert advert in Adverts)
         {
             <AdvertCard advert="advert" />

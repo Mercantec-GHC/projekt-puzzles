@@ -79,13 +79,24 @@
     string soldButtonText = "Mark as sold";
 
 
+
+    /// <summary>
+    /// Deletes the current advert by calling the AdvertService and navigates back to the user's advert list.
+    /// </summary>
     private async Task DeleteAdvert()
     {
+        // Call the service to delete the advert from the database
         await ad.DeleteAdvertAsync(advert.AdvertId);
 
+        // Redirect to the user's advert list page after deletion
         nav.NavigateTo($"/user/{advert.User.Username}/1");
     }
 
+
+    /// <summary>
+    /// Toggles the sold status of the advert and updates the button text accordingly.
+    /// Persists the change by calling the AdvertService.
+    /// </summary>
     private async Task ToggleSold()
     {
         if (advert.IsSold)
@@ -99,9 +110,15 @@
             soldButtonText = "Mark as for sale";
         }
 
+        // Update the advert's sold status in the database
         await ad.UpdateAdvertAsync(advert);
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Sets the initial button text based on the advert's sold status.
+    /// </summary>
     protected override void OnInitialized()
     {
         if (advert.IsSold)

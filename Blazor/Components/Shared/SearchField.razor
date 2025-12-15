@@ -12,8 +12,10 @@
 
             <datalist id="search-list">
                 @if (adverts != null)
-                {    
+                {
+                    // Add the current search text as the first suggestion
                     <option value="@search.SearchText"></option>
+                    // Add each advert's title as a suggestion, with the description as a label
                     @foreach (Advert advert in adverts)
                     {
                         <option value="@advert.Title" label="@advert.Description"></option>
@@ -58,13 +60,6 @@
                     <option value="DESC">Descending</option>
                 </select>
             </label>
-
-            @* <p>@search.OrderBy</p>
-            <p>@search.InOrder</p>
-
-            <p>@search.FilterRange</p>
-            <p>@search.RangeMin</p>
-            <p>@search.RangeMax</p> *@
             
         </div>
     </EditForm>
@@ -80,22 +75,38 @@
 
 
 
+
+    /// <summary>
+    /// Executes a search for adverts based on the current search parameters.
+    /// Updates the suggestions list and invokes the OnSearch callback.
+    /// </summary>
     private async Task Search()
     {
+        // Fetch up to 5 adverts matching the search text for suggestions
         adverts = await ad.GetAllAdvertsAsync(limit:5, searchTerm:search.SearchText);
 
+        // If the maximum range is 0, treat it as no upper limit
         if (search.RangeMax == 0) search.RangeMax = null;
 
+        // Notify parent component or handler of the search event
         await OnSearch.InvokeAsync(search);
     }
 
+
+    /// <summary>
+    /// Updates the advert suggestions as the user types in the search field.
+    /// If the search text is empty, performs a full search; otherwise, fetches up to 4 suggestions.
+    /// </summary>
+    /// <param name="e">The change event containing the new input value.</param>
     private async Task UpdateSuggetions(ChangeEventArgs e)
     {
         search.SearchText = e.Value?.ToString();
         if (string.IsNullOrEmpty(search.SearchText)) {
+            // If the search box is cleared, perform a full search
             await Search();
             return;
         }
+        // Fetch up to 4 adverts for autocomplete suggestions
         adverts = await ad.GetAllAdvertsAsync(limit: 4, searchTerm: search.SearchText);
     }
 

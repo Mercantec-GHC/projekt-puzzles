@@ -18,6 +18,7 @@
 </section>
 
 <section>
+    @* PaginationBar allows navigation between pages of the user's adverts. *@
     <PaginationBar pageIndex="pageIndex"
         NextPageUrl="@($"/user/{username}/{pageIndex + 1}#adverts")"
                    PreviousPageUrl="@($"/user/{username}/{pageIndex - 1}#adverts")"
@@ -39,10 +40,17 @@
 
     List<Advert> adverts;
 
+
+    /// <summary>
+    /// Called by the Blazor framework when component parameters change (e.g., pageIndex or username).
+    /// Calculates the page offset, determines if a next page is available, and loads the adverts for the current user and page.
+    /// </summary>
     protected override async Task OnParametersSetAsync()
     {
+        // Calculate the offset for the current page
         pageOffset = adsPerPage * (pageIndex - 1);
 
+        // Determine if there is a next page based on the advert count
         if ((pageOffset + adsPerPage) >= advertCount)
         {
             isNextPage = false;
@@ -52,20 +60,18 @@
             isNextPage = true;
         }
 
+        // Load the adverts for the current user and page
         adverts = await ad.GetAdvertsByUserAsync(username: username, limit: adsPerPage, offset: pageOffset);
     }
 
+
+    /// <summary>
+    /// Called by the Blazor framework when the component is initialized.
+    /// Loads the total advert count for the current user.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        // Get the total number of adverts for the user (regardless of sold status)
         advertCount = await ad.GetAdvertCountAsync(username: username, isSold: null);
     }
 }
-
-
-
-
-
-
-
-
-

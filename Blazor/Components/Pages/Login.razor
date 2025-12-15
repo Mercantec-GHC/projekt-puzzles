@@ -42,16 +42,24 @@
     User loginUser = new();
     string message;
 
+
+    /// <summary>
+    /// Handles the login form submission.
+    /// Attempts to log in the user and updates the application state or displays an error message.
+    /// </summary>
     private async Task Submit()
     {
+        // Attempt to log in with the provided username and password
         User loggedInUser = await us.LoginUserAsync(loginUser.Username, loginUser.Password);
         if (loggedInUser != null)
         {
+            // If login is successful, update the app state and navigate to the home page
             state.login(loggedInUser);
             NavigationManager.NavigateTo("/");
         }
         else
         {
+            // Show an error message if login fails
             message = "Username or password does not match";
         }
     }

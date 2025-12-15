@@ -51,16 +51,26 @@
     string message = "";
 
 
+
+    /// <summary>
+    /// Handles the sign-up form submission.
+    /// Checks if the password and confirmation match, then creates the user and navigates to the login page.
+    /// Otherwise, displays an error message.
+    /// </summary>
     private async Task Submit()
     {
+        // Check if the password and confirmation match
         if (loginUser.Password == passwordCopy)
         {
+            // Create the user account
             await userService.CreateUserAsync(loginUser);
+            // Optionally display a message, then navigate to login
             //message = "your account has been submitted";
             NavigationManager.NavigateTo("/login");
         }
         else
         {
+            // Show an error if the passwords do not match
             message = "The passwords does not match";
         }
     }

@@ -8,6 +8,7 @@
     <p>
         <span>@advert.PieceAmount P</span>
 
+        // Show a warning if the advert is sold, otherwise display the price
         @if (advert.IsSold)
         {
             <span class="warning">Sold</span>
@@ -20,11 +21,19 @@
 </div>
 
 @code {
+    /// <summary>
+    /// The advert to display in the card.
+    /// </summary>
     [Parameter]
     public Advert advert { get; set; }
 
+    /// <summary>
+    /// Navigates to the advert details page for the given advert ID.
+    /// </summary>
+    /// <param name="id">The ID of the advert to open.</param>
     void OpenAdvert(int id)
     {
+        // Use the NavigationManager to go to the advert details page
         NavigationManager.NavigateTo($"/advert/{id}");
     }
 }
