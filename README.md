@@ -8,7 +8,7 @@ I vores project kan man oprette brugere og annoncer, som kan redigeres af deres 
 
 ## Embedded Video og ~~designfil~~ 
 
-
+[![YouTube Video](https://img.youtube.com/vi/mAPccWPcW6U/0.jpg)](https://www.youtube.com/watch?v=mAPccWPcW6U)
 
 ## Opstartsguide af projektet - Hvordan starter man det!
 
